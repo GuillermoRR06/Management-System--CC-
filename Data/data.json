@@ -1,0 +1,76 @@
+{
+    "Eventos": [],
+    "Recursos": {
+        "humanos": {
+            "personal de limpieza": 8,
+            "tecnicos de sonido": 6,
+            "tecnicos de iluminacion": 6,
+            "operadores de proyeccion": 6,
+            "personal de seguridad": 8
+        },
+        "salas": [
+            {
+                "id": 1,
+                "capacidad": 150,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion"
+                ]
+            },
+            {
+                "id": 2,
+                "capacidad": 150,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion"
+                ]
+            },
+            {
+                "id": 3,
+                "capacidad": 180,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion"
+                ]
+            },
+            {
+                "id": 4,
+                "capacidad": 180,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion"
+                ]
+            },
+            {
+                "id": 5,
+                "capacidad": 250,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion",
+                    "escenario_modular"
+                ]
+            },
+            {
+                "id": 6,
+                "capacidad": 300,
+                "recursos_asociados": [
+                    "pantalla",
+                    "proyector",
+                    "sistema_sonido",
+                    "sistema_iluminacion",
+                    "escenario_modular"
+                ]
+            }
+        ]
+    }
+}
