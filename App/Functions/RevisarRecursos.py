@@ -2,6 +2,10 @@ import streamlit as st
 from datetime import *
 
 def Disponibility(events: list, day: date, tm: time) -> dict:
+    '''
+    Analiza la disponibilidad de los recursos del cine-teatro en la hora escogida
+    Retorna un diccionario con los recursos disponibles en el momento escogido
+    '''
     dispons = {
         "personal de limpieza": 8,
         "tecnicos de sonido": 6,
@@ -21,39 +25,53 @@ def Disponibility(events: list, day: date, tm: time) -> dict:
         hora_final = datetime.strptime(e["hora de fin"], '%H:%M').time()
         if hora_inicio <= tm or tm <= hora_final:
             dispons["personal de limpieza"] -= e["personal de limpieza"]
-            dispons["tecnicos de sonido"] -= e["tecnicos de sonido"]
-            dispons["tecnicos de iluminacion"] -= e["tecnicos de iluminacion"]
-            dispons["operadores de proyeccion"] -= e["operadores de proyeccion"]
             dispons["personal de seguridad"] -= e["personal de seguridad"]
             dispons["salas"][e["sala"]-1] = False
+            dispons["tecnicos de sonido"] -= e["tecnicos de sonido"]
+            if "tecnicos de iluminacion" in e.keys():
+                dispons["tecnicos de iluminacion"] -= e["tecnicos de iluminacion"]
+            if "operadores de proyeccion" in e.keys():
+                dispons["operadores de proyeccion"] -= e["operadores de proyeccion"]
     return dispons
 
 def Review_Place(id: int, salas: list) -> bool:
-    if not salas[id-1]:
-        st.success(f"La sala #{id} no esta disponible en el horario escogido")
+    '''
+    Analiza si la sala escogida se encuentra disponible en el horario establecido
+    '''
+    if not salas[id]:
+        st.success(f"La sala #{id+1} no esta disponible en el horario escogido")
         return False
     else:
         return True
 
 def Review_Capacity(sala: dict, assistance: int) -> bool:
+    '''
+    Analiza si la sala escogida tiene capacidad suficiente para la cantidad de asistentes
+    '''
     if sala["capacidad"] < assistance:
         st.success(f"La sala seleccionada no tiene suficientes butacas para {assistance} personas")
         return False
     return True
 
 def Review_Filme(personal_disponible : dict, personal_necesario: dict) -> bool:
+    '''
+    Analiza, a partir de los recursos disponibles y los recursos necesarios, si es posible efectuar el evento
+    '''
     ok = True
     for key in personal_disponible.keys():
         if key in personal_necesario.keys():
             if personal_necesario[key] > personal_disponible[key]:
                 ok = False
-                st.success(f"No se dispone de {personal_necesario[k]} {k} para la hora del evento")
+                st.success(f"No se dispone de {personal_necesario[key]} {key} para la hora del evento")
     return ok
 
 def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, name: str, recursos: dict) -> None:
+    '''
+    Agrega los eventos de forma que en un mismo dia todos queden ordenados cronologicamente
+    '''
     newEvent = {
         "nombre": name,
-        "tipo": typ.capitalize(),
+        "tipo": typ,
         "fecha": day.strftime('%B, %d, %Y'),
         "hora de inicio": tm_Init.strftime('%H:%M'),
         "hora de fin": tm_End.strftime('%H:%M')
@@ -69,10 +87,13 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
     if len(ev) == 0:
         ev.append(newEvent)
     else:
-        index = len(ev)-1
+        index = len(ev)
         for i in range(len(ev)):
             hora = datetime.strptime(ev[i]["hora de inicio"], '%H:%M').time()
-            if hora <= tm_Init:
-                index = i
+            if hora < tm_Init:
+                index = i+1
+                break
+            elif hora == tm_Init and hora.minute < tm_Init.minute:
+                index = i+1
                 break
         ev.insert(index, newEvent)
