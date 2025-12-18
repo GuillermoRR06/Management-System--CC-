@@ -16,8 +16,8 @@ def Disponibility(events: list, day: date, tm: time) -> dict:
     }
     ev = []
     for d in events:
-        if list(d.keys())[0] == day.strftime('%B, %d, %Y'):
-            ev = d[day.strftime('%B, %d, %Y')]
+        if d["id"] == day.strftime('%B, %d, %Y'):
+            ev = d["List_Events"]
             break
     
     for e in ev:
@@ -80,8 +80,8 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
     
     ev = []
     for d in events:
-        if list(d.keys())[0] == day.strftime('%B, %d, %Y'):
-            ev = d[day.strftime('%B, %d, %Y')]
+        if d["id"] == day.strftime('%B, %d, %Y'):
+            ev = d["List_Events"]
             break
     
     if len(ev) == 0:
@@ -91,9 +91,10 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
         for i in range(len(ev)):
             hora = datetime.strptime(ev[i]["hora de inicio"], '%H:%M').time()
             if hora < tm_Init:
-                index = i+1
+                index = i
+                print(5)
                 break
             elif hora == tm_Init and hora.minute < tm_Init.minute:
-                index = i+1
+                index = i
                 break
         ev.insert(index, newEvent)

@@ -7,7 +7,7 @@ This is a management system application developed in Python, wich allows the man
 
 ## Features
 
-> Add events (movie screenings for now) within a 30-day time period from the current date.
+> Add events (*movie screenings*, *Theather Plays* and *Musical Concerts*) within a 30-day time period from the current date.
 
 > Access information about domain resources (rooms and staff).
 
@@ -22,7 +22,5 @@ This is a management system application developed in Python, wich allows the man
 - - streamlit
 
 ## Coming soon...
-
-> New events: **Theather Plays** and **Musical Concerts**.
 
 > Delete scheduled events.
