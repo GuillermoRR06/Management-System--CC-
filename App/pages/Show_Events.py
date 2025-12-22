@@ -1,19 +1,93 @@
 import streamlit as st
+import datetime as dt
+from Functions import RevisarRecursos
 #-----------------------------------------------------------------------------------------------------------
 evens = st.session_state.get("Eventos")
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Eventos Programados")
 st.markdown("---")
 #-----------------------------------------------------------------------------------------------------------
-# Muestra todos los eventos programados en el periodo de tiempo actual
-for e in evens:
-    if e["In_Time"]:
-        st.markdown(f"### {e["id"]}")
-        for i in reversed(e["List_Events"]):
-            if i["tipo"] == "Proyeccion Filmica":
-                st.markdown(f"#### 🎥 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
-            if i["tipo"] == "Obra de Teatro":
-                st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
-            if i["tipo"] == "Concierto Musical":
-                st.markdown(f"#### ​🎸 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
-        st.markdown("---")
+daysList = ["Todos los dias"]
+daysDict = {}
+for i in range(31):
+    d = dt.date.today() + dt.timedelta(i)
+    daysDict[d.strftime('%B, %d, %Y')] = d
+    daysList.append(d.strftime('%B, %d, %Y'))
+selection = st.selectbox("Seleccione el dia del cual desea ver los eventos programados:", daysList)
+st.markdown("---")
+#-----------------------------------------------------------------------------------------------------------
+# Opcion: *Un dia seleccionado* -> Muestra todos los eventos programados en el dia especifico seleccionado
+k = 0
+if selection != "Todos los dias":
+    index = RevisarRecursos.BS_Date(evens, daysDict[selection])
+    if index == -1:
+        st.markdown("### No hay eventos programados para este dia")
+    else:
+        d = dt.date(evens[index]["id"][0], evens[index]["id"][1], evens[index]["id"][2])
+        st.markdown(f"### {d.strftime('%B, %d, %Y')}")
+        col1, col2, col3 = st.columns([3, 1, 1])
+        for i in reversed(evens[index]["Lista_Eventos"]):
+            if i["activo"]:
+                if i["tipo"] == "Proyeccion Filmica":
+                    with col1: st.markdown(f"#### 🎞️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                    with col2:
+                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        k += 1
+                    with col3:
+                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        k += 1
+                    st.markdown("---")
+                if i["tipo"] == "Obra de Teatro":
+                    with col1: st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                    with col2:
+                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        k += 1
+                    with col3:
+                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        k += 1
+                    st.markdown("---")
+                if i["tipo"] == "Concierto Musical":
+                    with col1: st.markdown(f"#### ​🎙️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                    with col2:
+                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        k += 1
+                    with col3:
+                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        k += 1
+                    st.markdown("---")
+            break
+#-----------------------------------------------------------------------------------------------------------
+# Opcion: "Todos los eventos" -> Muestra todos los eventos programados en el periodo de tiempo actual
+else:
+    for e in evens:
+        if e["In_Time"] and RevisarRecursos.Review_Events(e["Lista_Eventos"]):
+            d = dt.date(e["id"][0], e["id"][1], e["id"][2]).strftime('%B, %d, %Y')
+            st.markdown(f"### {d}")
+            col1, col2, col3 = st.columns([3, 1, 1])
+            for i in reversed(e["Lista_Eventos"]):
+                if i["activo"]:
+                    if i["tipo"] == "Proyeccion Filmica":
+                        with col1: st.markdown(f"#### 🎞️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                        with col2:
+                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            k += 1
+                        with col3:
+                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            k += 1
+                    if i["tipo"] == "Obra de Teatro":
+                        with col1: st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                        with col2:
+                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            k += 1
+                        with col3:
+                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            k += 1
+                    if i["tipo"] == "Concierto Musical":
+                        with col1: st.markdown(f"#### ​🎙️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                        with col2:
+                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            k += 1
+                        with col3:
+                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            k += 1
+        st.markdown("---") 

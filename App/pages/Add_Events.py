@@ -5,7 +5,6 @@ from Functions import Save_Data
 #-----------------------------------------------------------------------------------------------------------
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
-
 salas = res["salas"]
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Agregar nuevos eventos")
@@ -20,12 +19,12 @@ necesidades = {}
 if selection == tiposEventos[0]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora del nuevo evento:")
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
+    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
     with col2:
         st.write("Ingrese la duracion del evento:")
-        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
@@ -44,10 +43,10 @@ if selection == tiposEventos[0]:
         st.markdown("## ")
         col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
         tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido que necesite:", min_value=1, max_value=3, key=1)
-        with col6: opProyec = st.number_input("Ingrese la cantidad de operadores de proyeccion que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad que necesite:", min_value=1, max_value=3, key=4)
+        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+        with col6: opProyec = st.number_input("Ingrese la cantidad de operadores de proyeccion 📽️ que necesite:", min_value=1, max_value=3, key=2)
+        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
         necesidades = {
             "sala": lugar,
             "tecnicos de sonido": tecSonido,
@@ -57,26 +56,26 @@ if selection == tiposEventos[0]:
         }
         
         # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Filme(recursos, necesidades):
+        if RevisarRecursos.Review_Personal(recursos, necesidades):
             nombre = st.text_input("Ingresa el nombre de la pelicula:")
+            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
             st.markdown("---")
-            if nombre != "" and st.button("Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, necesidades)
+            if nombre != "" and st.button("▶️ Agregar Evento"):
+                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
                 data : dict = {}
                 data["Eventos"] = evens
                 data["Recursos"] = res
-                Save_Data.SaveData(data)
-        
+                Save_Data.SaveData(data)     
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[1]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora del nuevo evento:")
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
+    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
     with col2:
         st.write("Ingrese la duracion del evento:")
-        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
@@ -95,10 +94,10 @@ if selection == tiposEventos[1]:
         st.markdown("## ")
         col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
         tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido que necesite:", min_value=1, max_value=3, key=1)
-        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad que necesite:", min_value=1, max_value=3, key=4)
+        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
+        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
         necesidades = {
             "sala": lugar,
             "tecnicos de sonido": tecSonido,
@@ -108,25 +107,26 @@ if selection == tiposEventos[1]:
         }
         
         # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Filme(recursos, necesidades):
+        if RevisarRecursos.Review_Personal(recursos, necesidades):
             nombre = st.text_input("Ingresa el nombre de la obra teatral:")
+            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
             st.markdown("---")
-            if nombre != "" and st.button("Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, necesidades)
+            if nombre != "" and st.button("▶️ Agregar Evento"):
+                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
                 data : dict = {}
                 data["Eventos"] = evens
                 data["Recursos"] = res
-                Save_Data.SaveData(data)
+                Save_Data.SaveData(data)  
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[2]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora del nuevo evento:")
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
+    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
     with col2:
         st.write("Ingrese la duracion del evento:")
-        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
@@ -145,10 +145,10 @@ if selection == tiposEventos[2]:
         st.markdown("## ")
         col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
         tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido que necesite:", min_value=1, max_value=3, key=1)
-        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad que necesite:", min_value=1, max_value=3, key=4)
+        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
+        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
         necesidades = {
             "sala": lugar,
             "tecnicos de sonido": tecSonido,
@@ -158,12 +158,13 @@ if selection == tiposEventos[2]:
         }
         
         # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Filme(recursos, necesidades):
-            nombre = st.text_input("Ingresa el nombre del(de los) artista(s):")
+        if RevisarRecursos.Review_Personal(recursos, necesidades):
+            nombre = st.text_input("Ingresa el nombre del artista o los artistas:")
+            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
             st.markdown("---")
-            if nombre != "" and st.button("Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, necesidades)
+            if nombre != "" and st.button("▶️ Agregar Evento"):
+                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
                 data : dict = {}
                 data["Eventos"] = evens
                 data["Recursos"] = res
-                Save_Data.SaveData(data)
+                Save_Data.SaveData(data)  

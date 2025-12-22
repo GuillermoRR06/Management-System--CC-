@@ -1,5 +1,44 @@
 {
-    "Eventos": [],
+    "Eventos": [
+        {
+            "id": [
+                2025,
+                12,
+                23
+            ],
+            "Lista_Eventos": [
+                {
+                    "activo": false,
+                    "nombre": "Pelicula 2",
+                    "tipo": "Proyeccion Filmica",
+                    "descripcion": "",
+                    "fecha": "December, 23, 2025",
+                    "hora de inicio": "12:00",
+                    "hora de fin": "13:26",
+                    "sala": 2,
+                    "tecnicos de sonido": 1,
+                    "operadores de proyeccion": 1,
+                    "personal de limpieza": 1,
+                    "personal de seguridad": 1
+                },
+                {
+                    "activo": false,
+                    "nombre": "Pelicula 1",
+                    "tipo": "Proyeccion Filmica",
+                    "descripcion": "",
+                    "fecha": "December, 23, 2025",
+                    "hora de inicio": "09:24",
+                    "hora de fin": "10:40",
+                    "sala": 1,
+                    "tecnicos de sonido": 1,
+                    "operadores de proyeccion": 1,
+                    "personal de limpieza": 1,
+                    "personal de seguridad": 1
+                }
+            ],
+            "In_Time": true
+        }
+    ],
     "Recursos": {
         "humanos": {
             "personal de limpieza": 8,
@@ -45,8 +84,9 @@
                 "recursos_asociados": [
                     "pantalla",
                     "proyector",
-                    "sistema_sonido",
-                    "sistema_iluminacion"
+                    "sistema de sonido",
+                    "sistema de iluminacion",
+                    "escenario modular"
                 ]
             },
             {
@@ -55,9 +95,9 @@
                 "recursos_asociados": [
                     "pantalla",
                     "proyector",
-                    "sistema_sonido",
-                    "sistema_iluminacion",
-                    "escenario_modular"
+                    "sistema de sonido",
+                    "sistema de iluminacion",
+                    "escenario modular"
                 ]
             },
             {
@@ -66,9 +106,9 @@
                 "recursos_asociados": [
                     "pantalla",
                     "proyector",
-                    "sistema_sonido",
-                    "sistema_iluminacion",
-                    "escenario_modular"
+                    "sistema de sonido",
+                    "sistema de iluminacion",
+                    "escenario modular"
                 ]
             }
         ]

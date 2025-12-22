@@ -1,5 +1,9 @@
 import streamlit as st
 from datetime import *
+from Functions import Save_Data
+
+res = st.session_state["Recursos"]
+evens = st.session_state["Eventos"]
 
 def Disponibility(events: list, day: date, tm: time) -> dict:
     '''
@@ -21,17 +25,18 @@ def Disponibility(events: list, day: date, tm: time) -> dict:
             break
     
     for e in ev:
-        hora_inicio = datetime.strptime(e["hora de inicio"], '%H:%M').time()
-        hora_final = datetime.strptime(e["hora de fin"], '%H:%M').time()
-        if hora_inicio <= tm or tm <= hora_final:
-            dispons["personal de limpieza"] -= e["personal de limpieza"]
-            dispons["personal de seguridad"] -= e["personal de seguridad"]
-            dispons["salas"][e["sala"]-1] = False
-            dispons["tecnicos de sonido"] -= e["tecnicos de sonido"]
-            if "tecnicos de iluminacion" in e.keys():
-                dispons["tecnicos de iluminacion"] -= e["tecnicos de iluminacion"]
-            if "operadores de proyeccion" in e.keys():
-                dispons["operadores de proyeccion"] -= e["operadores de proyeccion"]
+        if e["activo"]:
+            hora_inicio = datetime.strptime(e["hora de inicio"], '%H:%M').time()
+            hora_final = datetime.strptime(e["hora de fin"], '%H:%M').time()
+            if hora_inicio <= tm or tm <= hora_final:
+                dispons["personal de limpieza"] -= e["personal de limpieza"]
+                dispons["personal de seguridad"] -= e["personal de seguridad"]
+                dispons["salas"][e["sala"]-1] = False
+                dispons["tecnicos de sonido"] -= e["tecnicos de sonido"]
+                if "tecnicos de iluminacion" in e.keys():
+                    dispons["tecnicos de iluminacion"] -= e["tecnicos de iluminacion"]
+                if "operadores de proyeccion" in e.keys():
+                    dispons["operadores de proyeccion"] -= e["operadores de proyeccion"]
     return dispons
 
 def Review_Place(id: int, salas: list) -> bool:
@@ -39,7 +44,7 @@ def Review_Place(id: int, salas: list) -> bool:
     Analiza si la sala escogida se encuentra disponible en el horario establecido
     '''
     if not salas[id]:
-        st.success(f"La sala #{id+1} no esta disponible en el horario escogido")
+        st.success(f"❌ La sala #{id+1} no esta disponible en el horario escogido")
         return False
     else:
         return True
@@ -49,11 +54,11 @@ def Review_Capacity(sala: dict, assistance: int) -> bool:
     Analiza si la sala escogida tiene capacidad suficiente para la cantidad de asistentes
     '''
     if sala["capacidad"] < assistance:
-        st.success(f"La sala seleccionada no tiene suficientes butacas para {assistance} personas")
+        st.success(f"❌ La sala seleccionada no tiene suficientes butacas para {assistance} personas")
         return False
     return True
 
-def Review_Filme(personal_disponible : dict, personal_necesario: dict) -> bool:
+def Review_Personal(personal_disponible : dict, personal_necesario: dict) -> bool:
     '''
     Analiza, a partir de los recursos disponibles y los recursos necesarios, si es posible efectuar el evento
     '''
@@ -62,27 +67,36 @@ def Review_Filme(personal_disponible : dict, personal_necesario: dict) -> bool:
         if key in personal_necesario.keys():
             if personal_necesario[key] > personal_disponible[key]:
                 ok = False
-                st.success(f"No se dispone de {personal_necesario[key]} {key} para la hora del evento")
+                st.success(f"❌ No se dispone de {personal_necesario[key]} {key} para la hora del evento")
     return ok
 
-def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, name: str, recursos: dict) -> None:
+def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, name: str, description: str, recursos: dict) -> None:
     '''
     Agrega los eventos de forma que en un mismo dia todos queden ordenados cronologicamente
     '''
     newEvent = {
+        "activo": True,
         "nombre": name,
         "tipo": typ,
+        "descripcion": description,
         "fecha": day.strftime('%B, %d, %Y'),
         "hora de inicio": tm_Init.strftime('%H:%M'),
         "hora de fin": tm_End.strftime('%H:%M')
     }
     newEvent.update(recursos)
     
+    index = BS_Date(evens, day)
     ev = []
-    for d in events:
-        if d["id"] == day.strftime('%B, %d, %Y'):
-            ev = d["List_Events"]
-            break
+    
+    if index == -1:
+        evens.append({
+            "id": (day.year, day.month, day.day),
+            "Lista_Eventos": [],
+            "In_Time": True
+        })
+        ev = evens[0]["Lista_Eventos"]
+    else:
+        ev = evens[index]["Lista_Eventos"]
     
     if len(ev) == 0:
         ev.append(newEvent)
@@ -92,9 +106,88 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
             hora = datetime.strptime(ev[i]["hora de inicio"], '%H:%M').time()
             if hora < tm_Init:
                 index = i
-                print(5)
                 break
             elif hora == tm_Init and hora.minute < tm_Init.minute:
                 index = i
                 break
         ev.insert(index, newEvent)
+    
+    Sort_Dates(evens)
+    data : dict = {}
+    data["Eventos"] = evens
+    data["Recursos"] = res
+    Save_Data.SaveData(data)
+
+def BS_Date(l: list, d: date) -> int:
+    if len(l) != 0:
+        left = 0
+        right = len(l)-1
+        founded = True
+        while founded:
+            mid = (left + right)//2
+            midDate = date(l[mid]["id"][0], l[mid]["id"][1], l[mid]["id"][2])
+            if d == midDate: return mid
+            elif left == right: founded = False
+            elif d < midDate: right = mid - 1
+            else: left = mid + 1
+    return -1
+
+def Sort_Dates(l: list) -> None:
+    if len(l) <= 1: return
+    mid = len(l)//2
+    left = l[:mid]
+    right = l[mid:]
+    
+    Sort_Dates(left)
+    Sort_Dates(right)
+    
+    i, j, k = 0, 0, 0
+    d1 = date(left[i][0], left[i][1], left[i][2])
+    d2 = date(right[i][0], right[i][1], right[i][2])
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            l[k] = left[i]
+            i+=1
+            d1 = date(left[i][0], left[i][1], left[i][2])
+        else:
+            l[k] = right[j]
+            j+=1
+            d2 = date(right[j][0], right[j][1], right[j][2])
+        k+=1
+    
+    while i < len(left):
+        l[k] = left[i]
+        i+=1
+        d1 = date(left[i][0], left[i][1], left[i][2])
+        k+=1
+    while j < len(right):
+        l[k] = right[j]
+        j+=1
+        d2 = date(right[j][0], right[j][1], right[j][2])
+        k+=1
+
+def ViewDetails(event: dict, col) -> None:
+    with col:
+        st.markdown(f"**Descripcion**: {event["descripcion"]}")
+        st.markdown("**Informacion de recursos ocupados**:")
+        st.markdown(f"Sala: #{event["sala"]}")
+        st.markdown(f"Tecnicos de Sonido: {event["tecnicos de sonido"]}")
+        if "operadores de proyeccion" in event.keys():
+            st.markdown(f"Operadores de Proyeccion: {event["operadores de proyeccion"]}")
+        if "tecnicos de iluminacion" in event.keys():
+            st.markdown(f"Tecnicos de Iluminacion: {event["tecnicos de iluminacion"]}")
+        st.markdown(f"Personal de Limpieza: {event["personal de limpieza"]}")
+        st.markdown(f"Personal de Seguridad: {event["personal de seguridad"]}")
+
+def DeleteEvent(event: dict) -> None:
+    event["activo"] = False
+    data : dict = {}
+    data["Eventos"] = evens
+    data["Recursos"] = res
+    Save_Data.SaveData(data)
+
+def Review_Events(events: list) -> bool:
+    for e in events:
+        if e["activo"]: return True
+    return False
