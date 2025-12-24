@@ -49,7 +49,7 @@ def Review_Place(id: int, salas: list) -> bool:
     else:
         return True
 
-def Review_Capacity(sala: dict, assistance: int) -> bool:
+def Review_Capacity(sala: dict) -> bool:
     '''
     Analiza si la sala escogida tiene capacidad suficiente para la cantidad de asistentes
     '''
@@ -57,6 +57,16 @@ def Review_Capacity(sala: dict, assistance: int) -> bool:
         st.success(f"❌ La sala seleccionada no tiene suficientes butacas para {assistance} personas")
         return False
     return True
+
+def Review_Scene(id: int) -> bool:
+    '''
+    Analiza si la sala escogida posee un escenario modular (estas son: #4, #5, #6)
+    '''
+    if id in [0, 1, 2]:
+        st.success(f"❌ La sala #{id+1} no posee un escenario modular.")
+        return False
+    else:
+        return True
 
 def Review_Personal(personal_disponible : dict, personal_necesario: dict) -> bool:
     '''

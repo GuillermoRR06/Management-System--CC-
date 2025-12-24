@@ -13,6 +13,8 @@ This is a management system application developed in Python, wich allows the man
 
 > Acces the list of scheduled events (within the 30-day period from the current date).
 
+> Acces information or Delete scheduled events.
+
 ## Requirements
 
 - Python 3.8 or higher.
@@ -21,6 +23,12 @@ This is a management system application developed in Python, wich allows the man
 
 - - streamlit
 
+## New:
+
+> The cinema-theater has a schedule for programming events: 8:00-23:59.
+
+> Theather Plays and Musical Concerts need a venue with a modular stage.
+
 ## Coming soon...
 
-> Delete scheduled events.
+> Can't schedule an event at a certain time? The app will recommend a new available time.

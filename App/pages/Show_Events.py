@@ -22,6 +22,8 @@ if selection != "Todos los dias":
     index = RevisarRecursos.BS_Date(evens, daysDict[selection])
     if index == -1:
         st.markdown("### No hay eventos programados para este dia")
+    elif not RevisarRecursos.Review_Events(evens[index]["Lista_Eventos"]):
+        st.markdown("### No hay eventos programados para este dia")
     else:
         d = dt.date(evens[index]["id"][0], evens[index]["id"][1], evens[index]["id"][2])
         st.markdown(f"### {d.strftime('%B, %d, %Y')}")
@@ -90,4 +92,4 @@ else:
                         with col3:
                             if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                             k += 1
-        st.markdown("---") 
+            st.markdown("---") 

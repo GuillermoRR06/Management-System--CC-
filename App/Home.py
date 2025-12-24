@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 today = dt.date.today()
 for e in appData["Eventos"]:
     if e["id"] != (today.year, today.month, today.day):
-        e["In_Time"] == False
+        e["In_Time"] = False
     else: break   
 Save_Data.SaveData(appData)
 #-----------------------------------------------------------------------------------------------------------

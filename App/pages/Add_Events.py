@@ -20,7 +20,11 @@ if selection == tiposEventos[0]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
     with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
+    with col1:
+        st.write("Ingrese la hora 🕑 del nuevo evento:")
+        hr = st.number_input("Horas:", min_value=8, max_value=23)
+        mint = st.slider("Minutos:", min_value=0, max_value=59)
+        horaInicial = time(hour=hr, minute=mint)
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
@@ -70,8 +74,12 @@ if selection == tiposEventos[0]:
 if selection == tiposEventos[1]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today()+timedelta(1), max_value=date.today()+timedelta(30))
+    with col1:
+        st.write("Ingrese la hora 🕑 del nuevo evento:")
+        hr = st.number_input("Horas:", min_value=8, max_value=23)
+        mint = st.slider("Minutos:", min_value=0, max_value=59)
+        horaInicial = time(hour=hr, minute=mint)
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
@@ -90,7 +98,7 @@ if selection == tiposEventos[1]:
     with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
     
     # Asignar (por cantidad) al personal que trabajara en la sala escogida
-    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
+    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
         st.markdown("## ")
         col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
         tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
@@ -122,7 +130,11 @@ if selection == tiposEventos[2]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
     with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
-    with col1: horaInicial = st.time_input("Seleccione la hora 🕑 del nuevo evento:")
+    with col1:
+        st.write("Ingrese la hora 🕑 del nuevo evento:")
+        hr = st.number_input("Horas:", min_value=8, max_value=23)
+        mint = st.slider("Minutos:", min_value=0, max_value=59)
+        horaInicial = time(hour=hr, minute=mint)
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
@@ -141,7 +153,7 @@ if selection == tiposEventos[2]:
     with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
     
     # Asignar (por cantidad) al personal que trabajara en la sala escogida
-    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
+    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
         st.markdown("## ")
         col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
         tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
