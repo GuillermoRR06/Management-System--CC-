@@ -61,8 +61,11 @@ if selection != "Todos los dias":
 #-----------------------------------------------------------------------------------------------------------
 # Opcion: "Todos los eventos" -> Muestra todos los eventos programados en el periodo de tiempo actual
 else:
+    print(5)
     for e in evens:
+        print(3)
         if e["In_Time"] and RevisarRecursos.Review_Events(e["Lista_Eventos"]):
+            print(2)
             d = dt.date(e["id"][0], e["id"][1], e["id"][2]).strftime('%B, %d, %Y')
             st.markdown(f"### {d}")
             col1, col2, col3 = st.columns([3, 1, 1])

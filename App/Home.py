@@ -10,7 +10,8 @@ st.set_page_config(layout="wide")
 #-----------------------------------------------------------------------------------------------------------
 today = dt.date.today()
 for e in appData["Eventos"]:
-    if e["id"] != (today.year, today.month, today.day):
+    d = dt.date(e["id"][0], e["id"][1], e["id"][2])
+    if d < today:
         e["In_Time"] = False
     else: break   
 Save_Data.SaveData(appData)

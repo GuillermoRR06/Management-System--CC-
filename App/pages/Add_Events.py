@@ -19,7 +19,7 @@ necesidades = {}
 if selection == tiposEventos[0]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today()+timedelta(1), max_value=date.today()+timedelta(30))
     with col1:
         st.write("Ingrese la hora 🕑 del nuevo evento:")
         hr = st.number_input("Horas:", min_value=8, max_value=23)
@@ -65,6 +65,7 @@ if selection == tiposEventos[0]:
             descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
             st.markdown("---")
             if nombre != "" and st.button("▶️ Agregar Evento"):
+                print(5)
                 RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
                 data : dict = {}
                 data["Eventos"] = evens

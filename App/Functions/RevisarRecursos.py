@@ -49,7 +49,7 @@ def Review_Place(id: int, salas: list) -> bool:
     else:
         return True
 
-def Review_Capacity(sala: dict) -> bool:
+def Review_Capacity(sala: dict, assistance: int) -> bool:
     '''
     Analiza si la sala escogida tiene capacidad suficiente para la cantidad de asistentes
     '''
@@ -104,7 +104,7 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
             "Lista_Eventos": [],
             "In_Time": True
         })
-        ev = evens[0]["Lista_Eventos"]
+        ev = evens[len(evens)-1]["Lista_Eventos"]
     else:
         ev = evens[index]["Lista_Eventos"]
     
@@ -152,29 +152,26 @@ def Sort_Dates(l: list) -> None:
     Sort_Dates(right)
     
     i, j, k = 0, 0, 0
-    d1 = date(left[i][0], left[i][1], left[i][2])
-    d2 = date(right[i][0], right[i][1], right[i][2])
-    
     while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
+        d1 = date(left[i]["id"][0], left[i]["id"][1], left[i]["id"][2])
+        d2 = date(right[j]["id"][0], right[j]["id"][1], right[j]["id"][2])
+        if d1 <= d2:
             l[k] = left[i]
             i+=1
-            d1 = date(left[i][0], left[i][1], left[i][2])
         else:
             l[k] = right[j]
             j+=1
-            d2 = date(right[j][0], right[j][1], right[j][2])
         k+=1
     
     while i < len(left):
+        d1 = date(left[i]["id"][0], left[i]["id"][1], left[i]["id"][2])
         l[k] = left[i]
         i+=1
-        d1 = date(left[i][0], left[i][1], left[i][2])
         k+=1
     while j < len(right):
+        d2 = date(right[j]["id"][0], right[j]["id"][1], right[j]["id"][2])
         l[k] = right[j]
         j+=1
-        d2 = date(right[j][0], right[j][1], right[j][2])
         k+=1
 
 def ViewDetails(event: dict, col) -> None:
