@@ -1,9 +1,15 @@
 import streamlit as st
 from datetime import *
 from Functions import Save_Data
-
+#-----------------------------------------------------------------------------------------------------------
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
+#-----------------------------------------------------------------------------------------------------------
+# Funciones que permiten analizar el choque de recursos
+def Review_Events(events: list) -> bool:
+    for e in events:
+        if e["activo"]: return True
+    return False
 
 def Disponibility(events: list, day: date, tm: time) -> dict:
     '''
@@ -79,7 +85,8 @@ def Review_Personal(personal_disponible : dict, personal_necesario: dict) -> boo
                 ok = False
                 st.success(f"❌ No se dispone de {personal_necesario[key]} {key} para la hora del evento")
     return ok
-
+#-----------------------------------------------------------------------------------------------------------
+# Funciones clave de la aplicacion: agregar, ver detalles y eliminar eventos
 def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, name: str, description: str, recursos: dict) -> None:
     '''
     Agrega los eventos de forma que en un mismo dia todos queden ordenados cronologicamente
@@ -128,6 +135,27 @@ def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, nam
     data["Recursos"] = res
     Save_Data.SaveData(data)
 
+def ViewDetails(event: dict, col) -> None:
+    with col:
+        st.markdown(f"**Descripcion**: {event["descripcion"]}")
+        st.markdown("**Informacion de recursos ocupados**:")
+        st.markdown(f"Sala: #{event["sala"]}")
+        st.markdown(f"Tecnicos de Sonido: {event["tecnicos de sonido"]}")
+        if "operadores de proyeccion" in event.keys():
+            st.markdown(f"Operadores de Proyeccion: {event["operadores de proyeccion"]}")
+        if "tecnicos de iluminacion" in event.keys():
+            st.markdown(f"Tecnicos de Iluminacion: {event["tecnicos de iluminacion"]}")
+        st.markdown(f"Personal de Limpieza: {event["personal de limpieza"]}")
+        st.markdown(f"Personal de Seguridad: {event["personal de seguridad"]}")
+
+def DeleteEvent(event: dict) -> None:
+    event["activo"] = False
+    data : dict = {}
+    data["Eventos"] = evens
+    data["Recursos"] = res
+    Save_Data.SaveData(data)
+#-----------------------------------------------------------------------------------------------------------
+# Funciones auxiliares, para buscar y ordenar fechas
 def BS_Date(l: list, d: date) -> int:
     if len(l) != 0:
         left = 0
@@ -173,28 +201,3 @@ def Sort_Dates(l: list) -> None:
         l[k] = right[j]
         j+=1
         k+=1
-
-def ViewDetails(event: dict, col) -> None:
-    with col:
-        st.markdown(f"**Descripcion**: {event["descripcion"]}")
-        st.markdown("**Informacion de recursos ocupados**:")
-        st.markdown(f"Sala: #{event["sala"]}")
-        st.markdown(f"Tecnicos de Sonido: {event["tecnicos de sonido"]}")
-        if "operadores de proyeccion" in event.keys():
-            st.markdown(f"Operadores de Proyeccion: {event["operadores de proyeccion"]}")
-        if "tecnicos de iluminacion" in event.keys():
-            st.markdown(f"Tecnicos de Iluminacion: {event["tecnicos de iluminacion"]}")
-        st.markdown(f"Personal de Limpieza: {event["personal de limpieza"]}")
-        st.markdown(f"Personal de Seguridad: {event["personal de seguridad"]}")
-
-def DeleteEvent(event: dict) -> None:
-    event["activo"] = False
-    data : dict = {}
-    data["Eventos"] = evens
-    data["Recursos"] = res
-    Save_Data.SaveData(data)
-
-def Review_Events(events: list) -> bool:
-    for e in events:
-        if e["activo"]: return True
-    return False

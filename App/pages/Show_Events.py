@@ -1,6 +1,9 @@
 import streamlit as st
 import datetime as dt
-from Functions import RevisarRecursos
+from Functions import RevisarRecursos, Save_Data
+#-----------------------------------------------------------------------------------------------------------
+if "Recursos" not in st.session_state or "Events" not in st.session_state:
+    appData = Save_Data.GetData(Save_Data.Get_Timestamp())
 #-----------------------------------------------------------------------------------------------------------
 evens = st.session_state.get("Eventos")
 #-----------------------------------------------------------------------------------------------------------
@@ -38,7 +41,6 @@ if selection != "Todos los dias":
                     with col3:
                         if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                         k += 1
-                    st.markdown("---")
                 if i["tipo"] == "Obra de Teatro":
                     with col1: st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
@@ -47,7 +49,6 @@ if selection != "Todos los dias":
                     with col3:
                         if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                         k += 1
-                    st.markdown("---")
                 if i["tipo"] == "Concierto Musical":
                     with col1: st.markdown(f"#### ​🎙️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
@@ -56,16 +57,12 @@ if selection != "Todos los dias":
                     with col3:
                         if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                         k += 1
-                    st.markdown("---")
-            break
+        st.markdown("---")
 #-----------------------------------------------------------------------------------------------------------
 # Opcion: "Todos los eventos" -> Muestra todos los eventos programados en el periodo de tiempo actual
 else:
-    print(5)
     for e in evens:
-        print(3)
         if e["In_Time"] and RevisarRecursos.Review_Events(e["Lista_Eventos"]):
-            print(2)
             d = dt.date(e["id"][0], e["id"][1], e["id"][2]).strftime('%B, %d, %Y')
             st.markdown(f"### {d}")
             col1, col2, col3 = st.columns([3, 1, 1])

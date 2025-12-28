@@ -3,6 +3,7 @@
 *First Programming Project, first year of Computer Sciencie*
 
 ## Description
+
 This is a management system application developed in Python, wich allows the management of resources and events in a ficticius domain (cinema/theather). Data is saved in a JSON file.
 
 ## Features
@@ -23,12 +24,12 @@ This is a management system application developed in Python, wich allows the man
 
 - - streamlit
 
-## New:
+## New
 
 > The cinema-theater has a schedule for programming events: 8:00-23:59.
 
 > Theather Plays and Musical Concerts need a venue with a modular stage.
 
-## Coming soon...
+## Coming soon
 
 > Can't schedule an event at a certain time? The app will recommend a new available time.

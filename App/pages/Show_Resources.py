@@ -1,4 +1,8 @@
 import streamlit as st
+from Functions import Save_Data
+#-----------------------------------------------------------------------------------------------------------
+if "Recursos" not in st.session_state or "Events" not in st.session_state:
+    appData = Save_Data.GetData(Save_Data.Get_Timestamp())
 #-----------------------------------------------------------------------------------------------------------
 res = st.session_state.get("Recursos")
 #-----------------------------------------------------------------------------------------------------------

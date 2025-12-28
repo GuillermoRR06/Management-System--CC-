@@ -3,6 +3,9 @@ from datetime import *
 from Functions import RevisarRecursos
 from Functions import Save_Data
 #-----------------------------------------------------------------------------------------------------------
+if "Recursos" not in st.session_state or "Events" not in st.session_state:
+    appData = Save_Data.GetData(Save_Data.Get_Timestamp())
+#-----------------------------------------------------------------------------------------------------------
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
 salas = res["salas"]
@@ -65,7 +68,6 @@ if selection == tiposEventos[0]:
             descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
             st.markdown("---")
             if nombre != "" and st.button("▶️ Agregar Evento"):
-                print(5)
                 RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
                 data : dict = {}
                 data["Eventos"] = evens
