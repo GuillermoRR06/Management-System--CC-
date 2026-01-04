@@ -45,6 +45,71 @@ def Disponibility(events: list, day: date, tm: time) -> dict:
                     dispons["operadores de proyeccion"] -= e["operadores de proyeccion"]
     return dispons
 
+def Check_Places(salas: list) -> bool:
+    '''
+    Revisa si todas las salas estan disponibles en el momento
+    '''
+    ok = True
+    if ok not in salas:
+        st.success("❌ No hay salas disponibles en este horario")
+        return False
+    return True
+
+def Check_Personal(res: dict, typ: str) -> bool:
+    '''
+    Revisa si el personal esta disponible
+    '''
+    ok = True
+    if res["personal de limpieza"] == 0:
+        st.success("❌ No hay personal de limpieza disponible en este horario")
+        ok = False
+    elif res["personal de seguridad"] == 0:
+        st.success("❌ No hay personal de seguridad disponible en este horario")
+        ok = False
+    elif res["tecnicos de sonido"] == 0:
+        st.success("❌ No hay tecnicos de sonido disponibles en este horario")
+        ok = False
+    else:
+        if typ == "Proyeccion Filmica":
+            if res["operadores de proyeccion"] == 0:
+                st.success("❌ No hay operadores de proyeccion disponibles en este horario")
+                ok = False
+        else:
+            if res["tecnicos de iluminacion"] == 0:
+                st.success("❌ No hay tecnicos de iluminacion disponibles en este horario")
+                ok = False
+    return ok
+
+def Check_MC(events: list, day: date, tm1: time, tm2: time) -> bool:
+    '''
+    Revisa si hay un concierto musical en el horario seleccionado
+    '''
+    d = BS_Date(events, day)
+    if d != -1:
+        for e in events[d]["Lista_Eventos"]:
+            if e["activo"] and e["tipo"] == "Concierto Musical":
+                h1 = datetime.strptime(e["hora de inicio"], '%H:%M').time()
+                h2 = datetime.strptime(e["hora de fin"], '%H:%M').time()
+                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2):
+                    st.success("❌ No es posible programar eventos en este horario. Hay un concierto musical")
+                    return False
+    return True  
+
+def Check_Evs(events: list, day: date, tm1: time, tm2: time) -> bool:
+    '''
+    Revisa si es posible programar un concierto musical en un determiando horario (no puede coincidir con otros eventos)
+    '''
+    d = BS_Date(events, day)
+    if d != -1:
+        for e in events[d]["Lista_Eventos"]:
+            if e["activo"]:
+                h1 = datetime.strptime(e["hora de inicio"], '%H:%M').time()
+                h2 = datetime.strptime(e["hora de fin"], '%H:%M').time()
+                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2):
+                    st.success("❌ No es posible programar un concierto musical en este horario. Ya hay otros eventos")
+                    return False
+    return True
+
 def Review_Place(id: int, salas: list) -> bool:
     '''
     Analiza si la sala escogida se encuentra disponible en el horario establecido
@@ -64,6 +129,51 @@ def Review_Capacity(sala: dict, assistance: int) -> bool:
         return False
     return True
 
+def Review_PersCapacity(persL: int, persS: int, assistance: int) -> bool:
+    '''
+    Analiza si la cantidad de personal seleccionado esta acorde a la asistencia del publico
+    '''
+    ok = True
+    cap = 1 if assistance < 100 else 2 if assistance < 200 else 3
+    
+    if persL < cap:
+        st.success(f"❌ La asistencia al evento es de {assistance} personas, por tanto necesitas al menos {cap} personas de limpieza")
+        ok = False
+    if persS < cap:
+        st.success(f"❌ La asistencia al evento es de {assistance} personas, por tanto necesitas al menos {cap} personas de seguridad")
+        ok = False
+        
+    return ok
+
+def Review_PersPlace(persS: int, persP: int, persL: int, id: int):
+    '''
+    Analiza si la cantidad de personal seleccionado esta acorde a la sala del evento
+    '''
+    ok = True
+    if id in [4, 5]:
+        if persS < 2:
+            st.success(f"❌ La sala {id} necesita al menos 2 tecnicos de sonido")
+            ok = False
+        if persP != 0 and persP < 2:
+            st.success(f"❌ La sala {id} necesita al menos 2 operadores de proyeccion")
+            ok = False
+        if persL != 0 and persL < 2:
+            st.success(f"❌ La sala {id} necesita al menos 2 tecnicos de iluminacion")
+            ok = False
+            
+    elif id == 6:
+        if persS < 3:
+            st.success(f"❌ La sala {id} necesita al menos 3 tecnicos de sonido")
+            ok = False
+        if persP != 0 and persP < 3:
+            st.success(f"❌ La sala {id} necesita al menos 3 operadores de proyeccion")
+            ok = False
+        if persL != 0 and persL < 3:
+            st.success(f"❌ La sala {id} necesita al menos 3 tecnicos de iluminacion")
+            ok = False
+            
+    return ok
+
 def Review_Scene(id: int) -> bool:
     '''
     Analiza si la sala escogida posee un escenario modular (estas son: #4, #5, #6)
@@ -76,7 +186,7 @@ def Review_Scene(id: int) -> bool:
 
 def Review_Personal(personal_disponible : dict, personal_necesario: dict) -> bool:
     '''
-    Analiza, a partir de los recursos disponibles y los recursos necesarios, si es posible efectuar el evento
+    Analiza, a partir del personal disponible y el personal necesario, si es posible efectuar el evento
     '''
     ok = True
     for key in personal_disponible.keys():
@@ -160,12 +270,10 @@ def BS_Date(l: list, d: date) -> int:
     if len(l) != 0:
         left = 0
         right = len(l)-1
-        founded = True
-        while founded:
+        while left <= right:
             mid = (left + right)//2
             midDate = date(l[mid]["id"][0], l[mid]["id"][1], l[mid]["id"][2])
             if d == midDate: return mid
-            elif left == right: founded = False
             elif d < midDate: right = mid - 1
             else: left = mid + 1
     return -1

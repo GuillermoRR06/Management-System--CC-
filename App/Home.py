@@ -4,7 +4,7 @@ import datetime as dt
 from Functions import Save_Data
 #-----------------------------------------------------------------------------------------------------------
 if "Recursos" not in st.session_state or "Events" not in st.session_state:
-    appData = Save_Data.GetData(Save_Data.Get_Timestamp())
+    appData = Save_Data.GetData()
 #-----------------------------------------------------------------------------------------------------------
 st.set_page_config(layout="wide")
 #-----------------------------------------------------------------------------------------------------------

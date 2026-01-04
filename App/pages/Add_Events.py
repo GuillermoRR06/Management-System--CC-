@@ -4,7 +4,7 @@ from Functions import RevisarRecursos
 from Functions import Save_Data
 #-----------------------------------------------------------------------------------------------------------
 if "Recursos" not in st.session_state or "Events" not in st.session_state:
-    appData = Save_Data.GetData(Save_Data.Get_Timestamp())
+    appData = Save_Data.GetData()
 #-----------------------------------------------------------------------------------------------------------
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
@@ -39,40 +39,42 @@ if selection == tiposEventos[0]:
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial)
     st.markdown("---")
     
-    # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
-    col3, col4 = st.columns([4, 4])
-    lugar, publico = 0, 0
-    with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
-    with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
-    
-    # Asignar (por cantidad) al personal que trabajara en la sala escogida
-    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
-        st.markdown("## ")
-        col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-        tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
-        with col6: opProyec = st.number_input("Ingrese la cantidad de operadores de proyeccion 📽️ que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
-        necesidades = {
-            "sala": lugar,
-            "tecnicos de sonido": tecSonido,
-            "operadores de proyeccion": opProyec,
-            "personal de limpieza": limpieza,
-            "personal de seguridad": seguridad
-        }
-        
-        # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Personal(recursos, necesidades):
-            nombre = st.text_input("Ingresa el nombre de la pelicula:")
-            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
-            st.markdown("---")
-            if nombre != "" and st.button("▶️ Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
-                data : dict = {}
-                data["Eventos"] = evens
-                data["Recursos"] = res
-                Save_Data.SaveData(data)     
+    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal):
+        # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
+        if RevisarRecursos.Check_Places(recursos["salas"]):
+            col3, col4 = st.columns([4, 4])
+            lugar, publico = 0, 0
+            with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
+            with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
+
+        # Asignar (por cantidad) al personal que trabajara en la sala escogida
+        if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            st.markdown("## ")
+            col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
+            tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
+            with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+            with col6: opProyec = st.number_input("Ingrese la cantidad de operadores de proyeccion 📽️ que necesite:", min_value=1, max_value=3, key=2)
+            with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+            with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
+            necesidades = {
+                "sala": lugar,
+                "tecnicos de sonido": tecSonido,
+                "operadores de proyeccion": opProyec,
+                "personal de limpieza": limpieza,
+                "personal de seguridad": seguridad
+            }
+            
+            # Asignar un nombre o identificativo a la pelicula
+            if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, opProyec, 0, lugar):
+                nombre = st.text_input("Ingresa el nombre de la pelicula:")
+                descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
+                st.markdown("---")
+                if nombre != "" and st.button("▶️ Agregar Evento"):
+                    RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
+                    data : dict = {}
+                    data["Eventos"] = evens
+                    data["Recursos"] = res
+                    Save_Data.SaveData(data)    
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[1]:
     # Seleccionar la fecha, la hora y la duracion del evento
@@ -94,45 +96,47 @@ if selection == tiposEventos[1]:
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial)
     st.markdown("---")
     
-    # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
-    col3, col4 = st.columns([4, 4])
-    lugar, publico = 0, 0
-    with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
-    with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
-    
-    # Asignar (por cantidad) al personal que trabajara en la sala escogida
-    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
-        st.markdown("## ")
-        col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-        tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
-        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
-        necesidades = {
-            "sala": lugar,
-            "tecnicos de sonido": tecSonido,
-            "tecnicos de iluminacion": tecLight,
-            "personal de limpieza": limpieza,
-            "personal de seguridad": seguridad
-        }
+    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal):
+        # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
+        if RevisarRecursos.Check_Places(recursos["salas"]):
+            col3, col4 = st.columns([4, 4])
+            lugar, publico = 0, 0
+            with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
+            with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
         
-        # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Personal(recursos, necesidades):
-            nombre = st.text_input("Ingresa el nombre de la obra teatral:")
-            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
-            st.markdown("---")
-            if nombre != "" and st.button("▶️ Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
-                data : dict = {}
-                data["Eventos"] = evens
-                data["Recursos"] = res
-                Save_Data.SaveData(data)  
+        # Asignar (por cantidad) al personal que trabajara en la sala escogida
+        if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            st.markdown("## ")
+            col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
+            tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
+            with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+            with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
+            with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+            with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
+            necesidades = {
+                "sala": lugar,
+                "tecnicos de sonido": tecSonido,
+                "tecnicos de iluminacion": tecLight,
+                "personal de limpieza": limpieza,
+                "personal de seguridad": seguridad
+            }
+            
+            # Asignar un nombre o identificativo a la pelicula
+            if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar):
+                nombre = st.text_input("Ingresa el nombre de la obra teatral:")
+                descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
+                st.markdown("---")
+                if nombre != "" and st.button("▶️ Agregar Evento"):
+                    RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
+                    data : dict = {}
+                    data["Eventos"] = evens
+                    data["Recursos"] = res
+                    Save_Data.SaveData(data)  
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[2]:
     # Seleccionar la fecha, la hora y la duracion del evento
     col0, col1, col2 = st.columns([4, 4, 4])
-    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today(), max_value=date.today()+timedelta(30))
+    with col0: fecha = st.date_input("Seleccione la fecha 📅 del nuevo evento:", min_value=date.today()+timedelta(1), max_value=date.today()+timedelta(30))
     with col1:
         st.write("Ingrese la hora 🕑 del nuevo evento:")
         hr = st.number_input("Horas:", min_value=8, max_value=23)
@@ -149,37 +153,39 @@ if selection == tiposEventos[2]:
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial)
     st.markdown("---")
     
-    # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
-    col3, col4 = st.columns([4, 4])
-    lugar, publico = 0, 0
-    with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
-    with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
-    
-    # Asignar (por cantidad) al personal que trabajara en la sala escogida
-    if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico):
-        st.markdown("## ")
-        col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-        tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
-        with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
-        with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
-        with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
-        with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
-        necesidades = {
-            "sala": lugar,
-            "tecnicos de sonido": tecSonido,
-            "tecnicos de iluminacion": tecLight,
-            "personal de limpieza": limpieza,
-            "personal de seguridad": seguridad
-        }
+    if RevisarRecursos.Check_Evs(evens, fecha, horaInicial, horaFinal):
+        # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
+        if RevisarRecursos.Check_Places(recursos["salas"]):
+            col3, col4 = st.columns([4, 4])
+            lugar, publico = 0, 0
+            with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
+            with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
         
-        # Asignar un nombre o identificativo a la pelicula
-        if RevisarRecursos.Review_Personal(recursos, necesidades):
-            nombre = st.text_input("Ingresa el nombre del artista o los artistas:")
-            descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
-            st.markdown("---")
-            if nombre != "" and st.button("▶️ Agregar Evento"):
-                RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
-                data : dict = {}
-                data["Eventos"] = evens
-                data["Recursos"] = res
-                Save_Data.SaveData(data)  
+        # Asignar (por cantidad) al personal que trabajara en la sala escogida
+        if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            st.markdown("## ")
+            col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
+            tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
+            with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
+            with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
+            with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
+            with col8: seguridad = st.number_input("Ingrese la cantidad de personal de seguridad 👮 que necesite:", min_value=1, max_value=3, key=4)
+            necesidades = {
+                "sala": lugar,
+                "tecnicos de sonido": tecSonido,
+                "tecnicos de iluminacion": tecLight,
+                "personal de limpieza": limpieza,
+                "personal de seguridad": seguridad
+            }
+            
+            # Asignar un nombre o identificativo a la pelicula
+            if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar):
+                nombre = st.text_input("Ingresa el nombre del artista o los artistas:")
+                descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
+                st.markdown("---")
+                if nombre != "" and st.button("▶️ Agregar Evento"):
+                    RevisarRecursos.AddEvent(evens, selection, fecha, horaInicial, horaFinal, nombre, descripcion, necesidades)
+                    data : dict = {}
+                    data["Eventos"] = evens
+                    data["Recursos"] = res
+                    Save_Data.SaveData(data)  
