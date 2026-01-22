@@ -11,7 +11,7 @@ def Review_Events(events: list) -> bool:
         if e["activo"]: return True
     return False
 
-def Disponibility(events: list, day: date, tm: time) -> dict:
+def Disponibility(events: list, day: date, tm_Inicial: time, tm_Final: time) -> dict:
     '''
     Analiza la disponibilidad de los recursos del cine-teatro en la hora escogida
     Retorna un diccionario con los recursos disponibles en el momento escogido
@@ -24,17 +24,17 @@ def Disponibility(events: list, day: date, tm: time) -> dict:
         "personal de seguridad": 8,
         "salas": [True, True, True, True, True, True]
     }
+    
     ev = []
     for d in events:
-        if d["id"] == day.strftime('%B, %d, %Y'):
-            ev = d["List_Events"]
-            break
-    
+        if date(d["id"][0], d["id"][1], d["id"][2]) == date(day.year, day.month, day.day):
+            ev = d["Lista_Eventos"]
+
     for e in ev:
         if e["activo"]:
             hora_inicio = datetime.strptime(e["hora de inicio"], '%H:%M').time()
             hora_final = datetime.strptime(e["hora de fin"], '%H:%M').time()
-            if hora_inicio <= tm or tm <= hora_final:
+            if (hora_inicio <= tm_Inicial and tm_Inicial <= hora_final) or (hora_inicio <= tm_Final and tm_Final <= hora_final) or (tm_Inicial <= hora_inicio and hora_final <= tm_Final):
                 dispons["personal de limpieza"] -= e["personal de limpieza"]
                 dispons["personal de seguridad"] -= e["personal de seguridad"]
                 dispons["salas"][e["sala"]-1] = False
@@ -90,7 +90,7 @@ def Check_MC(events: list, day: date, tm1: time, tm2: time) -> bool:
             if e["activo"] and e["tipo"] == "Concierto Musical":
                 h1 = datetime.strptime(e["hora de inicio"], '%H:%M').time()
                 h2 = datetime.strptime(e["hora de fin"], '%H:%M').time()
-                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2):
+                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2) or (h1 <= tm1 and h2 <= tm2):
                     st.success("❌ No es posible programar eventos en este horario. Hay un concierto musical")
                     return False
     return True  

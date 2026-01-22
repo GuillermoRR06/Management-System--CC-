@@ -1,5 +1,44 @@
 {
-    "Eventos": [],
+    "Eventos": [
+        {
+            "id": [
+                2026,
+                1,
+                23
+            ],
+            "Lista_Eventos": [
+                {
+                    "activo": false,
+                    "nombre": "Movie 1",
+                    "tipo": "Proyeccion Filmica",
+                    "descripcion": "",
+                    "fecha": "January, 23, 2026",
+                    "hora de inicio": "10:45",
+                    "hora de fin": "10:46",
+                    "sala": 1,
+                    "tecnicos de sonido": 1,
+                    "operadores de proyeccion": 1,
+                    "personal de limpieza": 1,
+                    "personal de seguridad": 1
+                },
+                {
+                    "activo": true,
+                    "nombre": "Jumanji",
+                    "tipo": "Proyeccion Filmica",
+                    "descripcion": "",
+                    "fecha": "January, 23, 2026",
+                    "hora de inicio": "10:45",
+                    "hora de fin": "11:59",
+                    "sala": 1,
+                    "tecnicos de sonido": 1,
+                    "operadores de proyeccion": 1,
+                    "personal de limpieza": 1,
+                    "personal de seguridad": 1
+                }
+            ],
+            "In_Time": true
+        }
+    ],
     "Recursos": {
         "humanos": {
             "personal de limpieza": 8,
