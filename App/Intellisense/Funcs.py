@@ -26,8 +26,13 @@ def FindNewHour_Place(evs: list, d: date, InitH: time, EndH: time, id: int) -> t
     
     i += 1 + duration.hour + (duration.minute//60)
     while i < 24:
-        for i in range(0, 60, step=10):
-            newInH += timedelta(minutes=i)
+        for i in range(5):
+            hr = newInH.hour
+            mint = newInH.minute + 10
+            if mint >= 60:
+                mint = mint % 60
+                hr += 1
+            newInH = time(hour=hr, minute=mint)
             newEnH = newInH + duration
             res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
             s = res["salas"]
@@ -42,6 +47,9 @@ def FindNewHour_Place(evs: list, d: date, InitH: time, EndH: time, id: int) -> t
 #-----------------------------------------------------------------------------------------------------------
 def FindNewDay(day: date) -> list:
     l = []
-    for i in range(30):
+    for i in range(1, 31):
         newD = day + timedelta(i)
-        if len(eve)
+        j = RevisarRecursos.BS_Date(evens, newD)
+        if len(evens[j]) < 6:
+            l.append(newD)
+            if len(l) == 3: return l
