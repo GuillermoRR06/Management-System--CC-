@@ -1,5 +1,54 @@
 {
-    "Eventos": [],
+    "Eventos": [
+        {
+            "id": [
+                2026,
+                2,
+                5
+            ],
+            "Lista_Eventos": [
+                {
+                    "activo": true,
+                    "nombre": "BTS",
+                    "tipo": "Concierto Musical",
+                    "descripcion": "",
+                    "fecha": "February, 05, 2026",
+                    "hora de inicio": "20:00",
+                    "hora de fin": "21:36",
+                    "sala": 6,
+                    "tecnicos de sonido": 3,
+                    "tecnicos de iluminacion": 3,
+                    "personal de limpieza": 3,
+                    "personal de seguridad": 3
+                }
+            ],
+            "In_Time": true
+        },
+        {
+            "id": [
+                2026,
+                2,
+                14
+            ],
+            "Lista_Eventos": [
+                {
+                    "activo": true,
+                    "nombre": "Parasite",
+                    "tipo": "Proyeccion Filmica",
+                    "descripcion": "Pelicula coreana, ambientada en un mundo posapocaliptico",
+                    "fecha": "February, 14, 2026",
+                    "hora de inicio": "10:00",
+                    "hora de fin": "11:44",
+                    "sala": 5,
+                    "tecnicos de sonido": 2,
+                    "operadores de proyeccion": 2,
+                    "personal de limpieza": 3,
+                    "personal de seguridad": 3
+                }
+            ],
+            "In_Time": true
+        }
+    ],
     "Recursos": {
         "humanos": {
             "personal de limpieza": 8,

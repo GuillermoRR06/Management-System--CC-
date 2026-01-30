@@ -44,16 +44,16 @@ if selection == tiposEventos[0]:
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
     st.markdown("---")
     #-------------------------------------------------------------------------------------------------------
-    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal):
+    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal, True):
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara 
-        if RevisarRecursos.Check_Places(recursos["salas"]):
+        if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
             lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
             with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
             #-------------------------------------------------------------------------------------------------------
             # Asignar (por cantidad) al personal que trabajara en la sala escogida
-            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
                 tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
@@ -71,7 +71,7 @@ if selection == tiposEventos[0]:
                 
                 #-------------------------------------------------------------------------------------------------------
                 # Asignar un nombre o identificativo a la pelicula
-                if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, opProyec, 0, lugar):
+                if RevisarRecursos.Review_Personal(recursos, necesidades, True) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico, True) and RevisarRecursos.Review_PersPlace(tecSonido, opProyec, 0, lugar, True):
                     nombre = st.text_input("Ingresa el nombre de la pelicula:")
                     descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
                     st.markdown("---")
@@ -81,6 +81,7 @@ if selection == tiposEventos[0]:
                         data["Eventos"] = evens
                         data["Recursos"] = res
                         Save_Data.SaveData(data)
+                        st.success("Evento agregado exitosamente")
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[1]:
     # Seleccionar la fecha, la hora y la duracion del evento
@@ -107,9 +108,9 @@ if selection == tiposEventos[1]:
     st.markdown("---")
     
     #-------------------------------------------------------------------------------------------------------
-    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal):
+    if RevisarRecursos.Check_MC(evens, fecha, horaInicial, horaFinal, True):
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
-        if RevisarRecursos.Check_Places(recursos["salas"]):
+        if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
             lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
@@ -117,7 +118,7 @@ if selection == tiposEventos[1]:
         
             #-------------------------------------------------------------------------------------------------------
             # Asignar (por cantidad) al personal que trabajara en la sala escogida
-            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Scene(lugar-1, True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
                 tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
@@ -134,7 +135,7 @@ if selection == tiposEventos[1]:
                 }
                 #-------------------------------------------------------------------------------------------------------
                 # Asignar un nombre o identificativo a la pelicula
-                if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar):
+                if RevisarRecursos.Review_Personal(recursos, necesidades, True) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico, True) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar, True):
                     nombre = st.text_input("Ingresa el nombre de la obra teatral:")
                     descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
                     st.markdown("---")
@@ -143,7 +144,8 @@ if selection == tiposEventos[1]:
                         data : dict = {}
                         data["Eventos"] = evens
                         data["Recursos"] = res
-                        Save_Data.SaveData(data)  
+                        Save_Data.SaveData(data)
+                        st.success("Evento agregado exitosamente")
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[2]:
     # Seleccionar la fecha, la hora y la duracion del evento
@@ -171,9 +173,9 @@ if selection == tiposEventos[2]:
     st.markdown("---")
     
     #-------------------------------------------------------------------------------------------------------
-    if RevisarRecursos.Check_Evs(evens, fecha, horaInicial, horaFinal):
+    if RevisarRecursos.Check_Evs(evens, fecha, horaInicial, horaFinal, True):
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
-        if RevisarRecursos.Check_Places(recursos["salas"]):
+        if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
             lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
@@ -181,7 +183,7 @@ if selection == tiposEventos[2]:
         
             #-------------------------------------------------------------------------------------------------------
             # Asignar (por cantidad) al personal que trabajara en la sala escogida
-            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"]) and RevisarRecursos.Review_Scene(lugar-1) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico) and RevisarRecursos.Check_Personal(recursos, selection):
+            if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Scene(lugar-1, True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
                 tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
@@ -198,7 +200,7 @@ if selection == tiposEventos[2]:
                 }
                 #-------------------------------------------------------------------------------------------------------
                 # Asignar un nombre o identificativo a la pelicula
-                if RevisarRecursos.Review_Personal(recursos, necesidades) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar):
+                if RevisarRecursos.Review_Personal(recursos, necesidades, True) and RevisarRecursos.Review_PersCapacity(limpieza, seguridad, publico, True) and RevisarRecursos.Review_PersPlace(tecSonido, 0, tecLight, lugar, True):
                     nombre = st.text_input("Ingresa el nombre del artista o los artistas:")
                     descripcion = st.text_area("Ingresa una descripcion del evento (opcional):", max_chars=144)
                     st.markdown("---")
@@ -207,4 +209,5 @@ if selection == tiposEventos[2]:
                         data : dict = {}
                         data["Eventos"] = evens
                         data["Recursos"] = res
-                        Save_Data.SaveData(data)  
+                        Save_Data.SaveData(data)
+                        st.success("Evento agregado exitosamente")
