@@ -18,6 +18,8 @@ tiposEventos = ["Proyeccion Filmica", "Obra de Teatro", "Concierto Musical"]
 selection = st.selectbox("Seleccione el evento que desea agregar:", tiposEventos)
 st.markdown("---")
 necesidades = {}
+lugar, publico = 1, 1
+tecSonido, opProyec, limpieza, seguridad, tecLight = 1, 1, 1, 1, 1
 #-----------------------------------------------------------------------------------------------------------
 if selection == tiposEventos[0]:
     # Seleccionar la fecha, la hora y la duracion del evento 
@@ -48,7 +50,6 @@ if selection == tiposEventos[0]:
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara 
         if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
-            lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
             with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
             #-------------------------------------------------------------------------------------------------------
@@ -56,7 +57,6 @@ if selection == tiposEventos[0]:
             if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-                tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
                 with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
                 with col6: opProyec = st.number_input("Ingrese la cantidad de operadores de proyeccion 📽️ que necesite:", min_value=1, max_value=3, key=2)
                 with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
@@ -112,7 +112,6 @@ if selection == tiposEventos[1]:
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
         if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
-            lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
             with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
         
@@ -121,7 +120,6 @@ if selection == tiposEventos[1]:
             if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Scene(lugar-1, True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-                tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
                 with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
                 with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
                 with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
@@ -177,7 +175,6 @@ if selection == tiposEventos[2]:
         # Seleccionar la cantidad de personas que asistiran al evento y la sala donde se efectuara
         if RevisarRecursos.Check_Places(recursos["salas"], True):
             col3, col4 = st.columns([4, 4])
-            lugar, publico = 0, 0
             with col3: publico = st.slider("Ingrese la cantidad de personas que asistiran al evento:", min_value=1, max_value=300)
             with col4: lugar = st.number_input("Ingrese la sala donde desea realizar el evento:", min_value=1, max_value=6)
         
@@ -186,7 +183,6 @@ if selection == tiposEventos[2]:
             if RevisarRecursos.Review_Place(lugar-1, recursos["salas"], True) and RevisarRecursos.Review_Scene(lugar-1, True) and RevisarRecursos.Review_Capacity(salas[lugar-1], publico, True) and RevisarRecursos.Check_Personal(recursos, selection, True):
                 st.markdown("## ")
                 col5, col6, col7, col8 = st.columns([4, 4, 4, 4])
-                tecSonido, opProyec, limpieza, seguridad = 0, 0, 0, 0
                 with col5: tecSonido = st.number_input("Ingrese la cantidad de tecnicos de sonido 🔊 que necesite:", min_value=1, max_value=3, key=1)
                 with col6: tecLight = st.number_input("Ingrese la cantidad de tecnicos de iluminacion 💡 que necesite:", min_value=1, max_value=3, key=2)
                 with col7: limpieza = st.number_input("Ingrese la cantidad de personal de limpieza 🧹 que necesite:", min_value=1, max_value=3, key=3)
