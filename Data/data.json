@@ -17,6 +17,10 @@
                     "proyector",
                     "sistema de sonido",
                     "sistema de iluminacion"
+                ],
+                "necesita": [
+                    "1 tecnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -27,6 +31,10 @@
                     "proyector",
                     "sistema de sonido",
                     "sistema de iluminacion"
+                ],
+                "necesita": [
+                    "1 tecnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -37,6 +45,10 @@
                     "proyector",
                     "sistema de sonido",
                     "sistema de iluminacion"
+                ],
+                "necesita": [
+                    "1 tecnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -48,6 +60,11 @@
                     "sistema de sonido",
                     "sistema de iluminacion",
                     "escenario modular"
+                ],
+                "necesita": [
+                    "2 tecnicos de sonido",
+                    "2 operadores de proyector",
+                    "2 tecnicos de iluminacion"
                 ]
             },
             {
@@ -59,6 +76,11 @@
                     "sistema de sonido",
                     "sistema de iluminacion",
                     "escenario modular"
+                ],
+                "necesita": [
+                    "2 tecnicos de sonido",
+                    "2 operadores de proyector",
+                    "2 tecnicos de iluminacion"
                 ]
             },
             {
@@ -70,6 +92,11 @@
                     "sistema de sonido",
                     "sistema de iluminacion",
                     "escenario modular"
+                ],
+                "necesita": [
+                    "3 tecnicos de sonido",
+                    "3 operadores de proyector",
+                    "3 tecnicos de iluminacion"
                 ]
             }
         ]
