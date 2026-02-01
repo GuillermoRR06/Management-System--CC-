@@ -97,7 +97,13 @@ def Check_MC(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
             if e["activo"] and e["tipo"] == "Concierto Musical":
                 h1 = datetime.strptime(e["hora de inicio"], '%H:%M').time()
                 h2 = datetime.strptime(e["hora de fin"], '%H:%M').time()
-                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2) or (h1 <= tm1 and h2 <= tm2):
+                hr = h2.hour
+                mint = h2.minute + 30
+                if mint >= 60:
+                    mint = mint % 60
+                    hr += 1
+                h2 = time(hour=hr, minute=mint)
+                if (h1 <= tm1 and tm1 <= h2) or (h1 <= tm2 and tm2 <= h2) or (tm1 <= h1 and h2 <= tm2):
                     if k: st.error("❌ No es posible programar eventos en este horario. Hay un concierto musical")
                     return False
     return True  
@@ -111,8 +117,14 @@ def Check_Evs(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
         for e in events[d]["Lista_Eventos"]:
             if e["activo"]:
                 h1 = datetime.strptime(e["hora de inicio"], '%H:%M').time()
-                h2 = datetime.strptime(e["hora de fin"], '%H:%M').time()
-                if (tm1 >= h1 and tm1 <= h2) or (tm2 >= h1 and tm2 <= h2):
+                haux = datetime.strptime(e["hora de fin"], '%H:%M').time()
+                hr = haux.hour
+                mint = haux.minute + 30
+                if mint >= 60:
+                    mint = mint % 60
+                    hr += 1
+                h2 = time(hour=hr, minute=mint)
+                if (h1 <= tm1 and tm1 <= h2) or (h1 <= tm2 and tm2 <= h2) or (tm1 <= h1 and h2 <= tm2):
                     if k: st.error("❌ No es posible programar un concierto musical en este horario. Ya hay otros eventos")
                     return False
     return True
