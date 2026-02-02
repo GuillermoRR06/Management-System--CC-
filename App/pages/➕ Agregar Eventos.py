@@ -37,11 +37,11 @@ if selection == tiposEventos[0]:
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        if hr > 23: hr = hr % 24
         mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
-            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
     
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
@@ -135,11 +135,11 @@ if selection == tiposEventos[1]:
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        if hr > 23: hr = hr % 24
         mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
-            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
         
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
@@ -235,11 +235,11 @@ if selection == tiposEventos[2]:
     with col2:
         st.write("Ingrese la duracion del evento:")
         hr = horaInicial.hour + st.number_input("Horas:", min_value=0, max_value=4)
+        if hr > 23: hr = hr % 24
         mint = horaInicial.minute + st.slider("Minutos:", min_value=1, max_value=59)
         if mint >= 60:
             mint = mint % 60
             hr += 1
-            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
         
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
