@@ -28,7 +28,7 @@ st.markdown("# Gestor de Eventos del Centro Cultural *La Cuarta Pared*")
 st.markdown("---")
 
 row1 = st.columns([2, 2, 2])
-with row1[1]: st.image("App\Gallery\Logo.png", caption="✨ La Cuarta Pared no se mira… se vive.", width=500)
+with row1[1]: st.image("App\Gallery\Logo.png", caption="✨ La Cuarta Pared no se mira… se vive.", width=400)
 
 st.markdown("La Cuarta Pared no es solo un cine-teatro: es un punto de impacto cultural, un espacio moderno donde las historias saltan de la pantalla, el escenario vibra con cada aplauso y la música en vivo te sacude el alma.")
 st.markdown("Todo en un ambiente moderno, eléctrico y diseñado para todo público, donde cada función es un evento y cada noche se convierte en un recuerdo. Entra, apaga el mundo por un rato y deja que el espectáculo haga el resto.")
