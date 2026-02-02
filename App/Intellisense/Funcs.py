@@ -46,10 +46,12 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
                 hr += 1
             newInH = time(hour=hr, minute=mint)
             hr = newInH.hour + duration[0]
+            if hr > 23: hr = hr % 24
             mint = newInH.minute + duration[1]
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
+                if hr > 23: hr = hr % 24
             newEnH = time(hour=hr, minute=mint)
             res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
             NotMC = RevisarRecursos.Check_MC(evs, d, newInH, newEnH, False)
