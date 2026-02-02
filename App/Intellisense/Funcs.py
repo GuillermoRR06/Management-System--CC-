@@ -32,6 +32,7 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
             if NotMC and NotAllPls and NotAllPers and YesPlace and YesPersonal:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return
+            print(" ")
         i += 1
     
     i += 1 + duration[0]
@@ -44,6 +45,12 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
                 mint = mint % 60
                 hr += 1
             newInH = time(hour=hr, minute=mint)
+            hr = newInH.hour + duration[0]
+            mint = newInH.minute + duration[1]
+            if mint >= 60:
+                mint = mint % 60
+                hr += 1
+            newEnH = time(hour=hr, minute=mint)
             res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
             NotMC = RevisarRecursos.Check_MC(evs, d, newInH, newEnH, False)
             NotAllPls = RevisarRecursos.Check_Places(res["salas"], False)
@@ -94,10 +101,8 @@ def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
                 mint = mint % 60
                 hr += 1
             newInH = time(hour=hr, minute=mint)
-            print(newInH)
             res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
             NotOEvs = RevisarRecursos.Check_Evs(evs, d, newInH, newEnH, False)
-            print(NotOEvs)
             if NotOEvs:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return

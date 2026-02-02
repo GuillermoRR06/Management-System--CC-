@@ -41,6 +41,7 @@ if selection == tiposEventos[0]:
         if mint >= 60:
             mint = mint % 60
             hr += 1
+            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
     
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
@@ -138,6 +139,7 @@ if selection == tiposEventos[1]:
         if mint >= 60:
             mint = mint % 60
             hr += 1
+            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
         
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
@@ -237,6 +239,7 @@ if selection == tiposEventos[2]:
         if mint >= 60:
             mint = mint % 60
             hr += 1
+            if hr > 23: hr = hr % 24
         horaFinal = time(hour=hr, minute=mint)
         
     recursos = RevisarRecursos.Disponibility(evens, fecha, horaInicial, horaFinal)
