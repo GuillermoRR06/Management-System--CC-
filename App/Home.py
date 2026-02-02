@@ -26,3 +26,22 @@ st.session_state["Eventos"] = appData["Eventos"]
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Gestor de Eventos del Centro Cultural *La Cuarta Pared*")
 st.markdown("---")
+
+row1 = st.columns([2, 2, 2])
+with row1[1]: st.image("App\Gallery\Logo.png", caption="✨ La Cuarta Pared no se mira… se vive.", width=500)
+
+st.markdown("La Cuarta Pared no es solo un cine-teatro: es un punto de impacto cultural, un espacio moderno donde las historias saltan de la pantalla, el escenario vibra con cada aplauso y la música en vivo te sacude el alma.")
+st.markdown("Todo en un ambiente moderno, eléctrico y diseñado para todo público, donde cada función es un evento y cada noche se convierte en un recuerdo. Entra, apaga el mundo por un rato y deja que el espectáculo haga el resto.")
+st.markdown("🚪 Rompe la barrera entre tú y el escenario.")
+st.markdown("🚀 Sal distinto de como entraste.")
+st.markdown("✨ La Cuarta Pared: no mires el arte… deja que te mire a ti.")
+
+st.markdown("---")
+st.markdown("Aquí no vienes a “ver un show”.")
+st.markdown("Vienes a **vivir una experiencia**.")
+
+row2 = st.columns([2, 2, 2])
+with row2[0]: st.image("App\Gallery\Movie_Screening.jpg", caption="🎬 Películas que te atrapan.", width=350)
+with row2[1]: st.image("App\Gallery\Theather_Play.jpg", caption="🎭 Obras que te confrontan.", width=350)
+with row2[2]: st.image("App\Gallery\Musical_Concert.jpg", caption="🎶 Conciertos que te atraviesan el pecho.", width=350)
+

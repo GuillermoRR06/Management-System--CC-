@@ -34,7 +34,7 @@ if selection != "Todos los dias":
         for i in reversed(evens[index]["Lista_Eventos"]):
             if i["activo"]:
                 if i["tipo"] == "Proyeccion Filmica":
-                    with col1: st.markdown(f"#### 🎞️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                    with col1: st.markdown(f"#### 🎬 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
                         if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
                         k += 1
@@ -50,7 +50,7 @@ if selection != "Todos los dias":
                         if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                         k += 1
                 if i["tipo"] == "Concierto Musical":
-                    with col1: st.markdown(f"#### ​🎙️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                    with col1: st.markdown(f"#### ​🎶 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
                         if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
                         k += 1
@@ -69,7 +69,7 @@ else:
             for i in reversed(e["Lista_Eventos"]):
                 if i["activo"]:
                     if i["tipo"] == "Proyeccion Filmica":
-                        with col1: st.markdown(f"#### 🎞️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                        with col1: st.markdown(f"#### 🎬 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                         with col2:
                             if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
                             k += 1
@@ -85,7 +85,7 @@ else:
                             if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
                             k += 1
                     if i["tipo"] == "Concierto Musical":
-                        with col1: st.markdown(f"#### ​🎙️ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
+                        with col1: st.markdown(f"#### ​🎶 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                         with col2:
                             if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
                             k += 1
