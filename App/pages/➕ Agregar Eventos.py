@@ -88,7 +88,7 @@ if selection == tiposEventos[0]:
                         data["Eventos"] = evens
                         data["Recursos"] = res
                         Save_Data.SaveData(data)
-                        st.success("Evento agregado exitosamente")
+                        st.switch_page("pages\📅 Lista de Eventos.py")
     
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario                    
                 elif not CorrectEmpls:
@@ -189,6 +189,7 @@ if selection == tiposEventos[1]:
                         data["Recursos"] = res
                         Save_Data.SaveData(data)
                         st.success("Evento agregado exitosamente")
+                        st.switch_page("pages\📅 Lista de Eventos.py")
 
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario                    
                 elif not CorrectEmpls:
@@ -284,6 +285,7 @@ if selection == tiposEventos[2]:
                     data["Recursos"] = res
                     Save_Data.SaveData(data)
                     st.success("Evento agregado exitosamente")
+                    st.switch_page("pages\📅 Lista de Eventos.py")
                     
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario
     else:
