@@ -1,6 +1,6 @@
 import streamlit as st
 import datetime as dt
-from Functions import RevisarRecursos, Save_Data
+from Functions import EventsFuncs, RevResources, AuxFuncs, Save_Data
 #-----------------------------------------------------------------------------------------------------------
 if "Recursos" not in st.session_state or "Events" not in st.session_state:
     appData = Save_Data.GetData()
@@ -22,10 +22,10 @@ st.markdown("---")
 # Opcion: *Un dia seleccionado* -> Muestra todos los eventos programados en el dia especifico seleccionado
 k = 0
 if selection != "Todos los dias":
-    index = RevisarRecursos.BS_Date(evens, daysDict[selection])
+    index = AuxFuncs.BS_Date(evens, daysDict[selection])
     if index == -1:
         st.markdown("### No hay eventos programados para este dia")
-    elif not RevisarRecursos.Review_Events(evens[index]["Lista_Eventos"]):
+    elif not RevResources.Review_Events(evens[index]["Lista_Eventos"]):
         st.markdown("### No hay eventos programados para este dia")
     else:
         d = dt.date(evens[index]["id"][0], evens[index]["id"][1], evens[index]["id"][2])
@@ -36,33 +36,33 @@ if selection != "Todos los dias":
                 if i["tipo"] == "Proyeccion Filmica":
                     with col1: st.markdown(f"#### 🎬 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
-                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                         k += 1
                     with col3:
-                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                         k += 1
                 if i["tipo"] == "Obra de Teatro":
                     with col1: st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
-                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                         k += 1
                     with col3:
-                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                         k += 1
                 if i["tipo"] == "Concierto Musical":
                     with col1: st.markdown(f"#### ​🎶 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                     with col2:
-                        if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                        if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                         k += 1
                     with col3:
-                        if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                        if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                         k += 1
         st.markdown("---")
 #-----------------------------------------------------------------------------------------------------------
 # Opcion: "Todos los eventos" -> Muestra todos los eventos programados en el periodo de tiempo actual
 else:
     for e in evens:
-        if e["In_Time"] and RevisarRecursos.Review_Events(e["Lista_Eventos"]):
+        if e["In_Time"] and RevResources.Review_Events(e["Lista_Eventos"]):
             d = dt.date(e["id"][0], e["id"][1], e["id"][2]).strftime('%B, %d, %Y')
             st.markdown(f"### {d}")
             col1, col2, col3 = st.columns([3, 1, 1])
@@ -71,25 +71,25 @@ else:
                     if i["tipo"] == "Proyeccion Filmica":
                         with col1: st.markdown(f"#### 🎬 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                         with col2:
-                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                             k += 1
                         with col3:
-                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                             k += 1
                     if i["tipo"] == "Obra de Teatro":
                         with col1: st.markdown(f"#### 🎭​ {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                         with col2:
-                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                             k += 1
                         with col3:
-                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                             k += 1
                     if i["tipo"] == "Concierto Musical":
                         with col1: st.markdown(f"#### ​🎶 {i["hora de inicio"]}-{i["hora de fin"]} | '{i["tipo"]}: {i["nombre"]}'")
                         with col2:
-                            if st.button("​🔍 Ver Detalles​", key=k): RevisarRecursos.ViewDetails(i, col1)
+                            if st.button("​🔍 Ver Detalles​", key=k): EventsFuncs.ViewDetails(i, col1)
                             k += 1
                         with col3:
-                            if st.button("🗑️ Eliminar", key=k): RevisarRecursos.DeleteEvent(i)
+                            if st.button("🗑️ Eliminar", key=k): EventsFuncs.DeleteEvent(i)
                             k += 1
             st.markdown("---") 

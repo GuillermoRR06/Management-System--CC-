@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import *
-from Functions import RevisarRecursos
+from Functions import RevResources, AuxFuncs
 #-----------------------------------------------------------------------------------------------------------
 evens = st.session_state["Eventos"]
 #-----------------------------------------------------------------------------------------------------------
@@ -23,16 +23,15 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
                 mint = mint % 60
                 hr += 1
             newEnH = time(hour=hr, minute=mint)
-            res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
-            NotMC = RevisarRecursos.Check_MC(evs, d, newInH, newEnH, False)
-            NotAllPls = RevisarRecursos.Check_Places(res["salas"], False)
-            NotAllPers = RevisarRecursos.Check_Personal(res, tip, False)
-            YesPlace = RevisarRecursos.Review_Place(id, res["salas"], False)
-            YesPersonal = RevisarRecursos.Review_Personal(res, emplsNed, False)
+            res = RevResources.Disponibility(evs, d, newInH, newEnH)
+            NotMC = RevResources.Check_MC(evs, d, newInH, newEnH, False)
+            NotAllPls = RevResources.Check_Places(res["salas"], False)
+            NotAllPers = RevResources.Check_Personal(res, tip, False)
+            YesPlace = RevResources.Review_Place(id, res["salas"], False)
+            YesPersonal = RevResources.Review_Personal(res, emplsNed, False)
             if NotMC and NotAllPls and NotAllPers and YesPlace and YesPersonal:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return
-            print(" ")
         i += 1
     
     i += 1 + duration[0]
@@ -53,12 +52,12 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
                 hr += 1
                 if hr > 23: hr = hr % 24
             newEnH = time(hour=hr, minute=mint)
-            res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
-            NotMC = RevisarRecursos.Check_MC(evs, d, newInH, newEnH, False)
-            NotAllPls = RevisarRecursos.Check_Places(res["salas"], False)
-            NotAllPers = RevisarRecursos.Check_Personal(res, tip, False)
-            YesPlace = RevisarRecursos.Review_Place(id, res["salas"], False)
-            YesPersonal = RevisarRecursos.Review_Personal(res, emplsNed, False)
+            res = RevResources.Disponibility(evs, d, newInH, newEnH)
+            NotMC = RevResources.Check_MC(evs, d, newInH, newEnH, False)
+            NotAllPls = RevResources.Check_Places(res["salas"], False)
+            NotAllPers = RevResources.Check_Personal(res, tip, False)
+            YesPlace = RevResources.Review_Place(id, res["salas"], False)
+            YesPersonal = RevResources.Review_Personal(res, emplsNed, False)
             if NotMC and NotAllPls and NotAllPers and YesPlace and YesPersonal:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return
@@ -86,8 +85,8 @@ def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
                 mint = mint % 60
                 hr += 1
             newEnH = time(hour=hr, minute=mint)
-            res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
-            NotOEvs = RevisarRecursos.Check_Evs(evs, d, newInH, newEnH, False)
+            res = RevResources.Disponibility(evs, d, newInH, newEnH)
+            NotOEvs = RevResources.Check_Evs(evs, d, newInH, newEnH, False)
             if NotOEvs:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return
@@ -103,13 +102,18 @@ def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
                 mint = mint % 60
                 hr += 1
             newInH = time(hour=hr, minute=mint)
-            res = RevisarRecursos.Disponibility(evs, d, newInH, newEnH)
-            NotOEvs = RevisarRecursos.Check_Evs(evs, d, newInH, newEnH, False)
+            hr = newInH.hour + duration[0]
+            mint = newInH.minute + duration[1]
+            if mint >= 60:
+                mint = mint % 60
+                hr += 1
+            newEnH = time(hour=hr, minute=mint)
+            res = RevResources.Disponibility(evs, d, newInH, newEnH)
+            NotOEvs = RevResources.Check_Evs(evs, d, newInH, newEnH, False)
             if NotOEvs:
                 st.success(f"Te recomiendo este nuevo horario para agregar el evento: {newInH.strftime('%H:%M')}")
                 return
         i += 1
-    print(i)
     FindNewDay(d) 
     return
 #-----------------------------------------------------------------------------------------------------------
@@ -118,7 +122,7 @@ def FindNewDay(day: date):
     l = 0
     for i in range(1, 31):
         newD = day + timedelta(i)
-        j = RevisarRecursos.BS_Date(evens, newD)
+        j = AuxFuncs.BS_Date(evens, newD)
         if len(evens[j]) < 6:
             l += 1
             st.success(newD.strftime('%B, %d, %Y'))

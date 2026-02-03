@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import *
 from Functions import Save_Data
+from Functions import AuxFuncs
 #-----------------------------------------------------------------------------------------------------------
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
@@ -10,7 +11,7 @@ def Review_Events(events: list) -> bool:
     for e in events:
         if e["activo"]: return True
     return False
-
+#-----------------------------------------------------------------------------------------------------------
 def Disponibility(events: list, day: date, tm_Inicial: time, tm_Final: time) -> dict:
     '''
     Analiza la disponibilidad de los recursos del cine-teatro en la hora escogida
@@ -51,7 +52,7 @@ def Disponibility(events: list, day: date, tm_Inicial: time, tm_Final: time) -> 
                 dispons["personal de limpieza"] -= e["personal de limpieza"]
                 dispons["salas"][e["sala"]-1] = False
     return dispons
-
+#-----------------------------------------------------------------------------------------------------------
 def Check_Places(salas: list, k: bool) -> bool:
     '''
     Revisa si todas las salas estan disponibles en el momento
@@ -61,7 +62,7 @@ def Check_Places(salas: list, k: bool) -> bool:
         if k: st.error("❌ No hay salas disponibles en este horario")
         return False
     return True
-
+#-----------------------------------------------------------------------------------------------------------
 def Check_Personal(res: dict, typ: str, k: bool) -> bool:
     '''
     Revisa si el personal esta disponible
@@ -86,12 +87,12 @@ def Check_Personal(res: dict, typ: str, k: bool) -> bool:
                 if k: st.error("❌ No hay tecnicos de iluminacion disponibles en este horario")
                 ok = False
     return ok
-
+#-----------------------------------------------------------------------------------------------------------
 def Check_MC(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
     '''
     Revisa si hay un concierto musical en el horario seleccionado
     '''
-    d = BS_Date(events, day)
+    d = AuxFuncs.BS_Date(events, day)
     if d != -1:
         for e in events[d]["Lista_Eventos"]:
             if e["activo"] and e["tipo"] == "Concierto Musical":
@@ -107,12 +108,12 @@ def Check_MC(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
                     if k: st.error("❌ No es posible programar eventos en este horario. Hay un concierto musical")
                     return False
     return True  
-
+#-----------------------------------------------------------------------------------------------------------
 def Check_Evs(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
     '''
     Revisa si es posible programar un concierto musical en un determiando horario (no puede coincidir con otros eventos)
     '''
-    d = BS_Date(events, day)
+    d = AuxFuncs.BS_Date(events, day)
     if d != -1:
         for e in events[d]["Lista_Eventos"]:
             if e["activo"]:
@@ -128,7 +129,7 @@ def Check_Evs(events: list, day: date, tm1: time, tm2: time, k: bool) -> bool:
                     if k: st.error("❌ No es posible programar un concierto musical en este horario. Ya hay otros eventos")
                     return False
     return True
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_Place(id: int, salas: list, k: bool) -> bool:
     '''
     Analiza si la sala escogida se encuentra disponible en el horario establecido
@@ -138,7 +139,7 @@ def Review_Place(id: int, salas: list, k: bool) -> bool:
         return False
     else:
         return True
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_Capacity(sala: dict, assistance: int, k: bool) -> bool:
     '''
     Analiza si la sala escogida tiene capacidad suficiente para la cantidad de asistentes
@@ -147,7 +148,7 @@ def Review_Capacity(sala: dict, assistance: int, k: bool) -> bool:
         if k: st.error(f"❌ La sala seleccionada no tiene suficientes butacas para {assistance} personas")
         return False
     return True
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_PersCapacity(persL: int, persS: int, assistance: int, k: bool) -> bool:
     '''
     Analiza si la cantidad de personal seleccionado esta acorde a la asistencia del publico
@@ -163,7 +164,7 @@ def Review_PersCapacity(persL: int, persS: int, assistance: int, k: bool) -> boo
         ok = False
         
     return ok
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_PersPlace(persS: int, persP: int, persL: int, id: int, k: bool):
     '''
     Analiza si la cantidad de personal seleccionado esta acorde a la sala del evento
@@ -192,7 +193,7 @@ def Review_PersPlace(persS: int, persP: int, persL: int, id: int, k: bool):
             ok = False
             
     return ok
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_Scene(id: int, k: bool) -> bool:
     '''
     Analiza si la sala escogida posee un escenario modular (estas son: #4, #5, #6)
@@ -202,7 +203,7 @@ def Review_Scene(id: int, k: bool) -> bool:
         return False
     else:
         return True
-
+#-----------------------------------------------------------------------------------------------------------
 def Review_Personal(personal_disponible : dict, personal_necesario: dict, k: bool) -> bool:
     '''
     Analiza, a partir del personal disponible y el personal necesario, si es posible efectuar el evento
@@ -215,116 +216,3 @@ def Review_Personal(personal_disponible : dict, personal_necesario: dict, k: boo
                 if k: st.error(f"❌ No se dispone de {personal_necesario[key]} {key} para la hora del evento")
     return ok
 #-----------------------------------------------------------------------------------------------------------
-# Funciones clave de la aplicacion: agregar, ver detalles y eliminar eventos
-def AddEvent(events: list, typ: str, day: date, tm_Init: time, tm_End: time, name: str, description: str, recursos: dict) -> None:
-    '''
-    Agrega los eventos de forma que en un mismo dia todos queden ordenados cronologicamente
-    '''
-    newEvent = {
-        "activo": True,
-        "nombre": name,
-        "tipo": typ,
-        "descripcion": description,
-        "fecha": day.strftime('%B, %d, %Y'),
-        "hora de inicio": tm_Init.strftime('%H:%M'),
-        "hora de fin": tm_End.strftime('%H:%M')
-    }
-    newEvent.update(recursos)
-    
-    index = BS_Date(evens, day)
-    ev = []
-    
-    if index == -1:
-        evens.append({
-            "id": (day.year, day.month, day.day),
-            "Lista_Eventos": [],
-            "In_Time": True
-        })
-        ev = evens[len(evens)-1]["Lista_Eventos"]
-    else:
-        ev = evens[index]["Lista_Eventos"]
-    
-    if len(ev) == 0:
-        ev.append(newEvent)
-    else:
-        index = len(ev)
-        for i in range(len(ev)):
-            hora = datetime.strptime(ev[i]["hora de inicio"], '%H:%M').time()
-            if hora < tm_Init:
-                index = i
-                break
-            elif hora == tm_Init and hora.minute < tm_Init.minute:
-                index = i
-                break
-        ev.insert(index, newEvent)
-    
-    Sort_Dates(evens)
-    data : dict = {}
-    data["Eventos"] = evens
-    data["Recursos"] = res
-    Save_Data.SaveData(data)
-
-def ViewDetails(event: dict, col) -> None:
-    with col:
-        st.markdown(f"**Descripcion**: {event["descripcion"]}")
-        st.markdown("**Informacion de recursos ocupados**:")
-        st.markdown(f"Sala: #{event["sala"]}")
-        st.markdown(f"Tecnicos de Sonido: {event["tecnicos de sonido"]}")
-        if "operadores de proyeccion" in event.keys():
-            st.markdown(f"Operadores de Proyeccion: {event["operadores de proyeccion"]}")
-        if "tecnicos de iluminacion" in event.keys():
-            st.markdown(f"Tecnicos de Iluminacion: {event["tecnicos de iluminacion"]}")
-        st.markdown(f"Personal de Limpieza: {event["personal de limpieza"]}")
-        st.markdown(f"Personal de Seguridad: {event["personal de seguridad"]}")
-
-def DeleteEvent(event: dict) -> None:
-    event["activo"] = False
-    data : dict = {}
-    data["Eventos"] = evens
-    data["Recursos"] = res
-    Save_Data.SaveData(data)
-#-----------------------------------------------------------------------------------------------------------
-# Funciones auxiliares, para buscar y ordenar fechas
-def BS_Date(l: list, d: date) -> int:
-    if len(l) != 0:
-        left = 0
-        right = len(l)-1
-        while left <= right:
-            mid = (left + right)//2
-            midDate = date(l[mid]["id"][0], l[mid]["id"][1], l[mid]["id"][2])
-            if d == midDate: return mid
-            elif d < midDate: right = mid - 1
-            else: left = mid + 1
-    return -1
-
-def Sort_Dates(l: list) -> None:
-    if len(l) <= 1: return
-    mid = len(l)//2
-    left = l[:mid]
-    right = l[mid:]
-    
-    Sort_Dates(left)
-    Sort_Dates(right)
-    
-    i, j, k = 0, 0, 0
-    while i < len(left) and j < len(right):
-        d1 = date(left[i]["id"][0], left[i]["id"][1], left[i]["id"][2])
-        d2 = date(right[j]["id"][0], right[j]["id"][1], right[j]["id"][2])
-        if d1 <= d2:
-            l[k] = left[i]
-            i+=1
-        else:
-            l[k] = right[j]
-            j+=1
-        k+=1
-    
-    while i < len(left):
-        d1 = date(left[i]["id"][0], left[i]["id"][1], left[i]["id"][2])
-        l[k] = left[i]
-        i+=1
-        k+=1
-    while j < len(right):
-        d2 = date(right[j]["id"][0], right[j]["id"][1], right[j]["id"][2])
-        l[k] = right[j]
-        j+=1
-        k+=1
