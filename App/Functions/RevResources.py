@@ -17,6 +17,8 @@ def Disponibility(events: list, day: date, tm_Inicial: time, tm_Final: time) -> 
     Analiza la disponibilidad de los recursos del cine-teatro en la hora escogida
     Retorna un diccionario con los recursos disponibles en el momento escogido
     '''
+    #Plantilla de los recursos del cine-teatro en su maxima disposicion. Esta funcion ira restando segun los eventos que coincidan
+    #en el horario
     dispons = {
         "personal de limpieza": 8,
         "tecnicos de sonido": 6,
@@ -165,7 +167,7 @@ def Review_PersCapacity(persL: int, persS: int, assistance: int, k: bool) -> boo
         
     return ok
 #-----------------------------------------------------------------------------------------------------------
-def Review_PersPlace(persS: int, persP: int, persL: int, id: int, k: bool):
+def Review_PersPlace(persS: int, persP: int, persL: int, id: int, k: bool) -> bool:
     '''
     Analiza si la cantidad de personal seleccionado esta acorde a la sala del evento
     '''

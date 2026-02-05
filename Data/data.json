@@ -1,86 +1,5 @@
 {
-    "Eventos": [
-        {
-            "id": [
-                2026,
-                2,
-                5
-            ],
-            "Lista_Eventos": [
-                {
-                    "activo": true,
-                    "nombre": "Concierto 1",
-                    "tipo": "Concierto Musical",
-                    "descripcion": "",
-                    "fecha": "February, 05, 2026",
-                    "hora de inicio": "15:40",
-                    "hora de fin": "16:41",
-                    "sala": 4,
-                    "tecnicos de sonido": 2,
-                    "tecnicos de iluminacion": 2,
-                    "personal de limpieza": 1,
-                    "personal de seguridad": 1
-                },
-                {
-                    "activo": true,
-                    "nombre": "Obra 1",
-                    "tipo": "Obra de Teatro",
-                    "descripcion": "",
-                    "fecha": "February, 05, 2026",
-                    "hora de inicio": "14:00",
-                    "hora de fin": "15:01",
-                    "sala": 4,
-                    "tecnicos de sonido": 2,
-                    "tecnicos de iluminacion": 2,
-                    "personal de limpieza": 1,
-                    "personal de seguridad": 1
-                },
-                {
-                    "activo": true,
-                    "nombre": "Pelicula 2",
-                    "tipo": "Proyeccion Filmica",
-                    "descripcion": "",
-                    "fecha": "February, 05, 2026",
-                    "hora de inicio": "12:00",
-                    "hora de fin": "13:01",
-                    "sala": 1,
-                    "tecnicos de sonido": 1,
-                    "operadores de proyeccion": 1,
-                    "personal de limpieza": 1,
-                    "personal de seguridad": 1
-                },
-                {
-                    "activo": true,
-                    "nombre": "Pelicula 3",
-                    "tipo": "Proyeccion Filmica",
-                    "descripcion": "",
-                    "fecha": "February, 05, 2026",
-                    "hora de inicio": "10:00",
-                    "hora de fin": "11:01",
-                    "sala": 1,
-                    "tecnicos de sonido": 1,
-                    "operadores de proyeccion": 1,
-                    "personal de limpieza": 1,
-                    "personal de seguridad": 1
-                },
-                {
-                    "activo": true,
-                    "nombre": "Pelicula 1",
-                    "tipo": "Proyeccion Filmica",
-                    "descripcion": "",
-                    "fecha": "February, 05, 2026",
-                    "hora de inicio": "08:00",
-                    "hora de fin": "09:01",
-                    "sala": 1,
-                    "tecnicos de sonido": 1,
-                    "operadores de proyeccion": 1,
-                    "personal de limpieza": 1,
-                    "personal de seguridad": 1
-                }
-            ],
-            "In_Time": true
-        }
-    ],
+    "Eventos": [],
     "Recursos": {
         "humanos": {
             "personal de limpieza": 8,
@@ -101,7 +20,8 @@
                 ],
                 "necesita": [
                     "1 tecnico de sonido",
-                    "1 operador de proyector"
+                    "1 operador de proyector",
+                    "1 tecnico de iluminacion"
                 ]
             },
             {
@@ -115,7 +35,8 @@
                 ],
                 "necesita": [
                     "1 tecnico de sonido",
-                    "1 operador de proyector"
+                    "1 operador de proyector",
+                    "1 tecnico de iluminacion"
                 ]
             },
             {
@@ -129,7 +50,8 @@
                 ],
                 "necesita": [
                     "1 tecnico de sonido",
-                    "1 operador de proyector"
+                    "1 operador de proyector",
+                    "1 tecnico de iluminacion"
                 ]
             },
             {
