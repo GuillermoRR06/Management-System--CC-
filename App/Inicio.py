@@ -24,7 +24,7 @@ Save_Data.SaveData(appData)
 st.session_state["Recursos"] = appData["Recursos"]
 st.session_state["Eventos"] = appData["Eventos"]
 #-----------------------------------------------------------------------------------------------------------
-st.markdown("# Gestor de Eventos del Centro Cultural *La Cuarta Pared*")
+st.markdown("# Gestor de Eventos del Cine-Teatro *La Cuarta Pared*")
 st.markdown("---")
 
 row1 = st.columns([2, 2, 2])
