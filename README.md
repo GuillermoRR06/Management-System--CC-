@@ -73,10 +73,10 @@ streamlit run App\Inicio.py
 
 ## Imágenes de la aplicación en uso
 
-![Pagina de Inicio](App\Gallery\Inicio.png)
+![Página de Inicio](App/Gallery/Inicio.png)
 
-![Pagina de Inicio](App\Gallery\AggEvs.png)
+![Página de Agregar Eventos](App/Gallery/AggEvs.png)
 
-![Pagina de Inicio](App\Gallery\ListEvs.png)
+![Página de Ver Lista de Eventos](App/Gallery/ListEvs.png)
 
-![Pagina de Inicio](App\Gallery\InfoRes.png)
+![Página de Ver Lista de Recursos](App/Gallery/InfoRes.png)
