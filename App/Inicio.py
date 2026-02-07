@@ -23,6 +23,8 @@ Save_Data.SaveData(appData)
 #-----------------------------------------------------------------------------------------------------------
 st.session_state["Recursos"] = appData["Recursos"]
 st.session_state["Eventos"] = appData["Eventos"]
+st.session_state.mostrar = False
+st.session_state.fecha = dt.date.today() - dt.timedelta(1)
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Gestor de Eventos del Cine-Teatro *La Cuarta Pared*")
 st.markdown("---")

@@ -6,23 +6,29 @@ if "Recursos" not in st.session_state or "Events" not in st.session_state:
     appData = Save_Data.GetData()
 #-----------------------------------------------------------------------------------------------------------
 evens = st.session_state.get("Eventos")
+day = st.session_state.fecha
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Eventos Programados")
 st.markdown("---")
 #-----------------------------------------------------------------------------------------------------------
 daysList = ["Todos los dias"]
-daysDict = {}
+j = 0
 for i in range(31):
     d = dt.date.today() + dt.timedelta(i)
-    daysDict[d.strftime('%B, %d, %Y')] = d
+    if st.session_state.mostrar and d.strftime('%B, %d, %Y') == day.strftime('%B, %d, %Y'): j = i+1
     daysList.append(d.strftime('%B, %d, %Y'))
-selection = st.selectbox("Seleccione el dia del cual desea ver los eventos programados:", daysList)
+selection = st.selectbox("Seleccione el dia del cual desea ver los eventos programados:", daysList, index=j)
 st.markdown("---")
 #-----------------------------------------------------------------------------------------------------------
 # Opcion: *Un dia seleccionado* -> Muestra todos los eventos programados en el dia especifico seleccionado
 k = 0
-if selection != "Todos los dias":
-    index = AuxFuncs.BS_Date(evens, daysDict[selection])
+if selection != "Todos los dias" or st.session_state.mostrar:
+    index = 0
+    if st.session_state.mostrar:
+        index = AuxFuncs.BS_Date(evens, st.session_state.fecha)
+        st.session_state.mostrar = False
+        st.session_state.fecha = dt.date.today() - dt.timedelta(1)
+    else: index = AuxFuncs.BS_Date(evens, daysDict[selection])
     if index == -1:
         st.markdown("### No hay eventos programados para este dia")
     elif not RevResources.Review_Events(evens[index]["Lista_Eventos"]):

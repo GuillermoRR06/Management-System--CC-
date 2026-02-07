@@ -9,6 +9,9 @@ if "Recursos" not in st.session_state or "Events" not in st.session_state:
 res = st.session_state["Recursos"]
 evens = st.session_state["Eventos"]
 salas = res["salas"]
+
+st.session_state.mostrar = False
+st.session_state.fecha = date.today() - timedelta(1)
 #-----------------------------------------------------------------------------------------------------------
 st.markdown("# Agregar nuevos eventos")
 st.markdown("---")
@@ -87,6 +90,8 @@ if selection == tiposEventos[0]:
                         data["Eventos"] = evens
                         data["Recursos"] = res
                         Save_Data.SaveData(data)
+                        st.session_state.mostrar = True
+                        st.session_state.fecha = fecha
     
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario                    
                 elif not CorrectEmpls:
@@ -187,6 +192,8 @@ if selection == tiposEventos[1]:
                         data["Recursos"] = res
                         Save_Data.SaveData(data)
                         st.success("Evento agregado exitosamente")
+                        st.session_state.mostrar = True
+                        st.session_state.fecha = fecha
 
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario                    
                 elif not CorrectEmpls:
@@ -281,6 +288,8 @@ if selection == tiposEventos[2]:
                     data["Recursos"] = res
                     Save_Data.SaveData(data)
                     st.success("Evento agregado exitosamente")
+                    st.session_state.mostrar = True
+                    st.session_state.fecha = fecha
                     
     #En caso de que no sea posible agregar el evento en este horario, se recomienda otro horario
     else:
@@ -292,3 +301,6 @@ if selection == tiposEventos[2]:
             "personal de seguridad": seguridad
         }
         Funcs.FindNewHour_Music(evens, fecha, horaInicial, horaFinal)
+
+if st.session_state.mostrar: st.switch_page("pages\📅 Lista de Eventos.py")
+    
