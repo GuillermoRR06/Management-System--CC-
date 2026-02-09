@@ -1,12 +1,12 @@
 # Planificador Inteligente de Eventos
 
-*Primer Proyecto de Programacion, primer año de Ciencia de la Computación*
+*Primer Proyecto de Programación, primer año de Ciencia de la Computación*
 
 ## Descripción
 
 El proyecto consiste en construir una aplicación de software completa para planificar **eventos** que consumen **recursos** de un inventario limitado.
 
-La aplicación ofrece al usuario:
+## Qué opciones ofrece la aplicación:
 
 - **Agregar** un nuevo evento (en un rango de tiempo de 30 días), invocando toda la lógica de validación. Ante colisiones de recursos y/o eventos, presenta una funcionalidad de **búsqueda automática de horarios**, es decir, analiza el calendario y **sugeiere** un intervalo de tiempo donde se pueda realizar sin conflictos ni violaciones de restricciones.
 

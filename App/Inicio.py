@@ -16,9 +16,10 @@ for e in appData["Eventos"]:
     else: break
     
 if len(appData["Eventos"]) >= 40:
-    for e in appData["Eventos"]:
-        if not e["In_Time"]:
-            appData["Eventos"].remove(e)
+    while len(appData["Eventos"]) > 0:
+        if not appData["Eventos"][0]["In_Time"]: appData["Eventos"].remove(appData["Eventos"][0])
+        else: break
+        
 Save_Data.SaveData(appData)
 #-----------------------------------------------------------------------------------------------------------
 st.session_state["Recursos"] = appData["Recursos"]

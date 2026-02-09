@@ -3,9 +3,9 @@
     "Recursos": {
         "humanos": {
             "personal de limpieza": 8,
-            "tecnicos de sonido": 6,
-            "tecnicos de iluminacion": 6,
-            "operadores de proyeccion": 6,
+            "técnicos de sonido": 6,
+            "técnicos de iluminación": 6,
+            "operadores de proyección": 6,
             "personal de seguridad": 8
         },
         "salas": [
@@ -16,12 +16,11 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion"
+                    "sistema de iluminación"
                 ],
                 "necesita": [
-                    "1 tecnico de sonido",
-                    "1 operador de proyector",
-                    "1 tecnico de iluminacion"
+                    "1 técnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -31,12 +30,11 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion"
+                    "sistema de iluminación"
                 ],
                 "necesita": [
-                    "1 tecnico de sonido",
-                    "1 operador de proyector",
-                    "1 tecnico de iluminacion"
+                    "1 técnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -46,12 +44,11 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion"
+                    "sistema de iluminación"
                 ],
                 "necesita": [
-                    "1 tecnico de sonido",
-                    "1 operador de proyector",
-                    "1 tecnico de iluminacion"
+                    "1 técnico de sonido",
+                    "1 operador de proyector"
                 ]
             },
             {
@@ -61,13 +58,13 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion",
+                    "sistema de iluminación",
                     "escenario modular"
                 ],
                 "necesita": [
-                    "2 tecnicos de sonido",
+                    "2 técnicos de sonido",
                     "2 operadores de proyector",
-                    "2 tecnicos de iluminacion"
+                    "2 técnicos de iluminación"
                 ]
             },
             {
@@ -77,13 +74,13 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion",
+                    "sistema de iluminación",
                     "escenario modular"
                 ],
                 "necesita": [
-                    "2 tecnicos de sonido",
+                    "2 técnicos de sonido",
                     "2 operadores de proyector",
-                    "2 tecnicos de iluminacion"
+                    "2 técnicos de iluminación"
                 ]
             },
             {
@@ -93,13 +90,13 @@
                     "pantalla",
                     "proyector",
                     "sistema de sonido",
-                    "sistema de iluminacion",
+                    "sistema de iluminación",
                     "escenario modular"
                 ],
                 "necesita": [
-                    "3 tecnicos de sonido",
+                    "3 técnicos de sonido",
                     "3 operadores de proyector",
-                    "3 tecnicos de iluminacion"
+                    "3 técnicos de iluminación"
                 ]
             }
         ]
