@@ -28,7 +28,7 @@ if selection != "Todos los dias" or st.session_state.mostrar:
         index = AuxFuncs.BS_Date(evens, st.session_state.fecha)
         st.session_state.mostrar = False
         st.session_state.fecha = dt.date.today() - dt.timedelta(1)
-    else: index = AuxFuncs.BS_Date(evens, daysDict[selection])
+    else: index = AuxFuncs.BS_Date(evens, dt.datetime.strptime(selection, '%B, %d, %Y').date())
     if index == -1:
         st.markdown("### No hay eventos programados para este dia")
     elif not RevResources.Review_Events(evens[index]["Lista_Eventos"]):

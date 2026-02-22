@@ -5,7 +5,10 @@ from Functions import RevResources, AuxFuncs
 evens = st.session_state["Eventos"]
 #-----------------------------------------------------------------------------------------------------------
 def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: str, id: int, emplsNed: dict):
-    duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    if EndH.hour >= InitH.hour: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    else:
+        FindNewDay(d) 
+        return
     i = 7
     newInH = time(i, 50, 0)
     
@@ -22,6 +25,7 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
+                if hr > 23: hr = hr % 24
             newEnH = time(hour=hr, minute=mint)
             res = RevResources.Disponibility(evs, d, newInH, newEnH)
             NotMC = RevResources.Check_MC(evs, d, newInH, newEnH, False)
@@ -35,6 +39,9 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
         i += 1
     
     i += 1 + duration[0]
+    if i > 23:
+        FindNewDay(d) 
+        return
     newInH = time(i, 50, 0)
     while i < 24:
         for t in range(5):
@@ -43,6 +50,9 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
+                if hr > 23:
+                    FindNewDay(d) 
+                    return
             newInH = time(hour=hr, minute=mint)
             hr = newInH.hour + duration[0]
             if hr > 23: hr = hr % 24
@@ -50,7 +60,9 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
-                if hr > 23: hr = hr % 24
+                if hr > 23:
+                    FindNewDay(d) 
+                    return
             newEnH = time(hour=hr, minute=mint)
             res = RevResources.Disponibility(evs, d, newInH, newEnH)
             NotMC = RevResources.Check_MC(evs, d, newInH, newEnH, False)
@@ -67,7 +79,10 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
     return
 #-----------------------------------------------------------------------------------------------------------
 def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
-    duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    if EndH.hour >= InitH.hour: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    else:
+        FindNewDay(d) 
+        return
     i = 7
     newInH = time(i, 50, 0)
     
@@ -93,6 +108,9 @@ def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
         i += 1
     
     i += 1 + duration[0]
+    if i > 23:
+        FindNewDay(d) 
+        return
     newInH = time(i, 50, 0)
     while i < 24:
         for t in range(5):
@@ -101,12 +119,19 @@ def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
+                if hr > 23:
+                    FindNewDay(d) 
+                    return
             newInH = time(hour=hr, minute=mint)
             hr = newInH.hour + duration[0]
+            if hr > 23: hr = hr % 24
             mint = newInH.minute + duration[1]
             if mint >= 60:
                 mint = mint % 60
                 hr += 1
+                if hr > 23:
+                    FindNewDay(d) 
+                    return
             newEnH = time(hour=hr, minute=mint)
             res = RevResources.Disponibility(evs, d, newInH, newEnH)
             NotOEvs = RevResources.Check_Evs(evs, d, newInH, newEnH, False)
