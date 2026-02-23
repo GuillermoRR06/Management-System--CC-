@@ -5,7 +5,9 @@ from Functions import RevResources, AuxFuncs
 evens = st.session_state["Eventos"]
 #-----------------------------------------------------------------------------------------------------------
 def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: str, id: int, emplsNed: dict):
-    if EndH.hour >= InitH.hour: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    if EndH.hour >= InitH.hour:
+        if EndH.minute >= InitH.minute: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+        else: duration = (EndH.hour - InitH.hour, (InitH.minute + 60) - EndH.minute)
     else:
         FindNewDay(d) 
         return
@@ -79,7 +81,9 @@ def FindNewHour_Film_Theather(evs: list, d: date, InitH: time, EndH: time, tip: 
     return
 #-----------------------------------------------------------------------------------------------------------
 def FindNewHour_Music(evs: list, d: date, InitH: time, EndH: time):
-    if EndH.hour >= InitH.hour: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+    if EndH.hour >= InitH.hour:
+        if EndH.minute >= InitH.minute: duration = (EndH.hour - InitH.hour, EndH.minute - InitH.minute)
+        else: duration = (EndH.hour - InitH.hour, (InitH.minute + 60) - EndH.minute)
     else:
         FindNewDay(d) 
         return
